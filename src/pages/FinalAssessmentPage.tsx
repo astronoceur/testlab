@@ -1,15 +1,19 @@
 import React, { useMemo, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import Layout from '../components/Layout';
-import FeedbackMessage from '../components/FeedbackMessage';
+import ActivityQuizModal from '../components/ActivityQuizModal';
 import { units } from '../data/units';
 
 const FinalAssessmentPage: React.FC = () => {
   const {
-    navigateTo, currentUnit,
-    finalAssessmentAnswers, setFinalAssessmentAnswers,
-    finalAssessmentScore, setFinalAssessmentScore,
-    finalAssessmentSubmitted, setFinalAssessmentSubmitted,
+    navigateTo,
+    currentUnit,
+    finalAssessmentAnswers,
+    setFinalAssessmentAnswers,
+    finalAssessmentScore,
+    setFinalAssessmentScore,
+    finalAssessmentSubmitted,
+    setFinalAssessmentSubmitted,
     setUnitScore,
   } = useApp();
 
@@ -24,29 +28,34 @@ const FinalAssessmentPage: React.FC = () => {
   const [selected, setSelected] = useState<(number | null)[]>(
     finalAssessmentAnswers.length === questions.length
       ? finalAssessmentAnswers
-      : Array(questions.length).fill(null)
+      : Array(questions.length).fill(null),
   );
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const answeredCount = selected.filter((s) => s !== null).length;
+  const allAnswered = answeredCount === questions.length;
+  const correctCount = selected.filter((s, i) => s === questions[i].correctIndex).length;
+  const passed = finalAssessmentScore >= passingThreshold;
 
   const handleSelect = (qIdx: number, oIdx: number) => {
     if (finalAssessmentSubmitted) return;
-    const updated = [...selected];
-    updated[qIdx] = oIdx;
-    setSelected(updated);
+    const next = [...selected];
+    next[qIdx] = oIdx;
+    setSelected(next);
+    setFinalAssessmentAnswers(next);
   };
 
-  const allAnswered = selected.every((s) => s !== null);
-
-  const handleSubmit = () => {
+  const handleSubmitAll = () => {
     const correct = selected.filter((s, i) => s === questions[i].correctIndex).length;
     const pct = Math.round((correct / questions.length) * 100);
     setFinalAssessmentAnswers(selected);
     setFinalAssessmentScore(pct);
     setFinalAssessmentSubmitted(true);
     setUnitScore(currentUnit, pct);
+    /* Mantem o modal aberto — agora em modo "revisao com feedback".
+     * O usuario pode navegar pelas questoes vendo respostas certas
+     * e explicacoes antes de fechar. */
   };
-
-  const correctCount = selected.filter((s, i) => s === questions[i].correctIndex).length;
-  const passed = finalAssessmentScore >= passingThreshold;
 
   /* Erros agrupados por bloco de revisao (Unidade 1) */
   const blocksToReview = useMemo(() => {
@@ -55,7 +64,6 @@ const FinalAssessmentPage: React.FC = () => {
       .filter((q, i) => selected[i] !== q.correctIndex)
       .map((q) => String(q.id));
     if (!unit.reviewMap) {
-      // tenta extrair de cada questao individual
       const blocks = questions
         .filter((_, i) => selected[i] !== questions[i].correctIndex)
         .flatMap((q) => (q.reviewBlock ? q.reviewBlock.split(',') : []));
@@ -73,85 +81,69 @@ const FinalAssessmentPage: React.FC = () => {
     'bloco-5': 'Bloco 5 — Importância do Teste no Ciclo',
   };
 
+  /* Indice inicial: primeira nao respondida (durante o quiz) ou
+   * 0 (quando ja submetido). */
+  const initialIndex = (() => {
+    if (finalAssessmentSubmitted) return 0;
+    const idx = selected.findIndex((s) => s === null);
+    return idx === -1 ? 0 : idx;
+  })();
+
   return (
     <Layout showProgress>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <div>
-          <p style={{ margin: 0, fontSize: '0.78rem', fontWeight: 800, color: '#7a5a00', textTransform: 'uppercase', letterSpacing: 1 }}>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '0.78rem',
+              fontWeight: 800,
+              color: 'var(--tl-title)',
+              textTransform: 'uppercase',
+              letterSpacing: 1,
+            }}
+          >
             Avaliação Final {isRich ? '— Padrão CTFL/ISTQB Foundation Level' : ''}
           </p>
           <h1 className="tl-title" style={{ margin: '0.25rem 0 0.25rem', fontSize: '1.5rem' }}>
             {questions.length} questões objetivas
           </h1>
-          <p style={{ margin: 0, color: '#3d6a28', fontSize: '0.875rem' }}>
-            Responda todas as questões e clique em Enviar. Aprovação requer{' '}
-            <strong>{passingThreshold}%</strong> ou mais.
+          <p style={{ margin: 0, color: 'var(--tl-text-muted)', fontSize: '0.875rem' }}>
+            Responda cada questão na janela e clique em Próxima. Aprovação requer{' '}
+            <strong>{passingThreshold}%</strong> ou mais. O feedback aparece após enviar a
+            avaliação completa.
           </p>
         </div>
 
-        {questions.map((q, qIdx) => (
-          <div key={q.id} className="tl-card">
-            <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'flex-start' }}>
-              <div className="tl-badge" style={{ width: 'auto', minWidth: 28, padding: '0 6px', fontSize: '0.72rem' }}>
-                {String(q.id)}
-              </div>
-              <p
-                style={{
-                  margin: 0,
-                  fontWeight: 800,
-                  color: '#1a4a10',
-                  fontSize: '0.92rem',
-                  lineHeight: 1.45,
-                  paddingTop: 3,
-                  whiteSpace: 'pre-line',
-                }}
-              >
-                {q.question}
+        {/* Card de status */}
+        <div className="tl-card" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <div>
+              <p style={{ margin: 0, fontWeight: 800, color: 'var(--tl-title)' }}>
+                Status: {finalAssessmentSubmitted ? 'Avaliação enviada' : 'Em andamento'}
+              </p>
+              <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--tl-text-muted)' }}>
+                Respondidas: {answeredCount} de {questions.length}
+                {finalAssessmentSubmitted && ` · Pontuação: ${finalAssessmentScore}%`}
               </p>
             </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginLeft: 36 }}>
-              {q.options.map((opt, oIdx) => {
-                const isSel = selected[qIdx] === oIdx;
-                const isCorrect = oIdx === q.correctIndex;
-                const sub = finalAssessmentSubmitted;
-
-                let cls = 'tl-option';
-                if (sub && isCorrect) cls += ' tl-option-correct';
-                else if (sub && isSel && !isCorrect) cls += ' tl-option-wrong';
-                else if (sub) cls += ' tl-option-disabled';
-                else if (isSel) cls += ' tl-option-selected';
-
-                return (
-                  <button
-                    key={oIdx}
-                    onClick={() => handleSelect(qIdx, oIdx)}
-                    disabled={sub}
-                    className={cls}
-                  >
-                    {sub && isCorrect && <strong>✓ </strong>}
-                    {sub && isSel && !isCorrect && <strong>✗ </strong>}
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-
-            {finalAssessmentSubmitted && (
-              <div style={{ marginLeft: 36, marginTop: 4 }}>
-                <FeedbackMessage
-                  correct={selected[qIdx] === q.correctIndex}
-                  explanation={
-                    selected[qIdx] === q.correctIndex
-                      ? q.explanation
-                      : (q.errorExplanation ?? q.explanation)
-                  }
-                />
-              </div>
-            )}
+            <button className="tl-btn" onClick={() => setModalOpen(true)}>
+              {finalAssessmentSubmitted
+                ? 'Revisar respostas e feedback'
+                : answeredCount === 0
+                ? 'Iniciar avaliação →'
+                : 'Continuar avaliação →'}
+            </button>
           </div>
-        ))}
+          <div className="tl-progress-track" style={{ height: 10 }}>
+            <div
+              className="tl-progress-fill"
+              style={{ width: `${(answeredCount / questions.length) * 100}%` }}
+            />
+          </div>
+        </div>
 
+        {/* Resultado apos envio */}
         {finalAssessmentSubmitted && (
           <>
             <div
@@ -159,8 +151,8 @@ const FinalAssessmentPage: React.FC = () => {
               style={{
                 textAlign: 'center',
                 padding: '2rem',
-                background: passed ? '#d4f0c0' : '#fdd',
-                borderColor: passed ? '#2d8f2d' : '#8b0000',
+                background: passed ? 'var(--tl-btn-ghost)' : 'var(--tl-error-bg)',
+                borderColor: passed ? 'var(--tl-success)' : 'var(--tl-error)',
                 borderWidth: 3,
               }}
             >
@@ -170,7 +162,7 @@ const FinalAssessmentPage: React.FC = () => {
                   margin: '0 0 4px',
                   fontSize: '2rem',
                   fontWeight: 900,
-                  color: passed ? '#0a4f0a' : '#660000',
+                  color: passed ? 'var(--tl-success)' : 'var(--tl-error-strong)',
                 }}
               >
                 {finalAssessmentScore}%
@@ -180,16 +172,17 @@ const FinalAssessmentPage: React.FC = () => {
                   margin: '0 0 8px',
                   fontSize: '1.1rem',
                   fontWeight: 800,
-                  color: passed ? '#0a4f0a' : '#660000',
+                  color: passed ? 'var(--tl-success)' : 'var(--tl-error-strong)',
                 }}
               >
-                {correctCount}/{questions.length} questões corretas — {passed ? 'Aprovado!' : 'Precisa revisar'}
+                {correctCount}/{questions.length} questões corretas —{' '}
+                {passed ? 'Aprovado!' : 'Precisa revisar'}
               </p>
               <p
                 style={{
                   margin: 0,
                   fontSize: '0.875rem',
-                  color: passed ? '#1a6a1a' : '#880000',
+                  color: passed ? 'var(--tl-title)' : 'var(--tl-error-strong)',
                 }}
               >
                 {passed
@@ -199,8 +192,8 @@ const FinalAssessmentPage: React.FC = () => {
             </div>
 
             {!passed && blocksToReview.length > 0 && (
-              <div className="tl-card" style={{ background: '#fffde0', borderColor: '#c0a000' }}>
-                <p style={{ margin: '0 0 0.5rem', fontWeight: 800, color: '#7a6000' }}>
+              <div className="tl-card" style={{ background: 'var(--tl-bg-soft)', borderColor: 'var(--tl-card-border)' }}>
+                <p style={{ margin: '0 0 0.5rem', fontWeight: 800, color: 'var(--tl-title)' }}>
                   📚 Blocos sugeridos para revisão
                 </p>
                 <ul
@@ -218,12 +211,12 @@ const FinalAssessmentPage: React.FC = () => {
                       key={bId}
                       style={{
                         background: '#fff',
-                        border: '1px solid #c0a000',
+                        border: '1px solid var(--tl-card-border)',
                         borderRadius: 6,
                         padding: '0.4rem 0.75rem',
                         fontSize: '0.85rem',
                         fontWeight: 700,
-                        color: '#5a4800',
+                        color: 'var(--tl-title)',
                       }}
                     >
                       🔁 {blockLabels[bId] ?? bId}
@@ -247,27 +240,36 @@ const FinalAssessmentPage: React.FC = () => {
           <button className="tl-btn-ghost" onClick={() => navigateTo('feedback')}>
             ← Voltar
           </button>
-          {!finalAssessmentSubmitted ? (
-            <button className="tl-btn" onClick={handleSubmit} disabled={!allAnswered}>
-              Enviar Avaliação
-            </button>
-          ) : passed ? (
+          {finalAssessmentSubmitted && passed && (
             <button className="tl-btn" onClick={() => navigateTo('challenge')}>
               Ir ao Desafio Aplicado 🏆
             </button>
-          ) : (
+          )}
+          {finalAssessmentSubmitted && !passed && (
             <button className="tl-btn-ghost" onClick={() => navigateTo('content')}>
               Rever Conteúdo →
             </button>
           )}
+          {!finalAssessmentSubmitted && !allAnswered && (
+            <span style={{ fontSize: '0.78rem', color: 'var(--tl-text-muted)' }}>
+              Responda todas as questões na janela para enviar.
+            </span>
+          )}
         </div>
-
-        {!finalAssessmentSubmitted && !allAnswered && (
-          <p style={{ textAlign: 'center', fontSize: '0.78rem', color: '#7a5a00', margin: 0 }}>
-            Responda todas as questões para enviar.
-          </p>
-        )}
       </div>
+
+      <ActivityQuizModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        questions={questions}
+        answers={selected}
+        onSelect={handleSelect}
+        mode="deferred"
+        submitted={finalAssessmentSubmitted}
+        onSubmitAll={handleSubmitAll}
+        activityLabel="Avaliação Final"
+        initialIndex={initialIndex}
+      />
     </Layout>
   );
 };

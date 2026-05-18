@@ -1,7 +1,9 @@
 import { AppProvider, useApp } from './context/AppContext';
+import ladybug from './assets/ladybug.png';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import UnitsPage from './pages/UnitsPage';
+import UnitContentsPage from './pages/UnitContentsPage';
 import WelcomePage from './pages/WelcomePage';
 import ObjectivesPage from './pages/ObjectivesPage';
 import SituationProblemPage from './pages/SituationProblemPage';
@@ -17,13 +19,35 @@ import FeedbackPage from './pages/FeedbackPage';
 import FinalAssessmentPage from './pages/FinalAssessmentPage';
 import ChallengePage from './pages/ChallengePage';
 
+const LoadingSplash = () => (
+  <div
+    style={{
+      minHeight: '100vh',
+      background: 'var(--tl-bg)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '1rem',
+    }}
+  >
+    <img src={ladybug} alt="" style={{ width: 96, opacity: 0.85 }} />
+    <p className="tl-title" style={{ fontSize: '1.1rem', margin: 0 }}>
+      Carregando Test Lab...
+    </p>
+  </div>
+);
+
 const PageRouter = () => {
-  const { page } = useApp();
+  const { page, authLoading } = useApp();
+
+  if (authLoading) return <LoadingSplash />;
 
   switch (page) {
     case 'login':                return <LoginPage />;
     case 'home':                 return <HomePage />;
     case 'units':                return <UnitsPage />;
+    case 'unit-contents':        return <UnitContentsPage />;
     case 'welcome':              return <WelcomePage />;
     case 'objectives':           return <ObjectivesPage />;
     case 'situation-problem':    return <SituationProblemPage />;

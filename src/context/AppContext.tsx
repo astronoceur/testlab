@@ -1,63 +1,79 @@
-import React, { createContext, useContext, useState } from 'react';
-import { Page, User, StoredUser } from '../types';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import type { Session } from '@supabase/supabase-js';
+import { Page, User } from '../types';
+import { supabase } from '../data/supabaseClient';
+import {
+  UnitProgress,
+  UnitStatus,
+  UserProgress,
+  emptyUserProgress,
+  flushPendingSave,
+  isUnitUnlocked,
+  loadOrMigrateUserProgress,
+  saveUserProgress,
+  unitProgressPercent,
+  unitStatus,
+  updateUnitProgress,
+} from '../data/progressStore';
 
-const USERS_KEY = 'testlab_users';
-const SESSION_KEY = 'testlab_session';
-const PROGRESS_KEY = 'testlab_progress';
+/* Paginas que pertencem ao fluxo da unidade. Usadas para registrar
+ * automaticamente lastPage/visitedPages no progresso do usuario. */
+const UNIT_PAGES: Page[] = [
+  'welcome',
+  'objectives',
+  'situation-problem',
+  'prior-knowledge',
+  'content',
+  'examples',
+  'demonstration',
+  'atividade-1-1',
+  'atividade-1-2',
+  'guided-practice',
+  'independent-practice',
+  'feedback',
+  'final-assessment',
+  'challenge',
+  'unit-contents',
+];
 
-function loadUsers(): StoredUser[] {
-  try {
-    const raw = localStorage.getItem(USERS_KEY);
-    return raw ? (JSON.parse(raw) as StoredUser[]) : [];
-  } catch {
-    return [];
+/* Traduz mensagens comuns de erro do Supabase Auth (ingles) para
+ * portugues. Se nao reconhecer, devolve a mensagem original. */
+function translateAuthError(message: string): string {
+  const m = message.toLowerCase();
+  if (m.includes('invalid login credentials')) return 'E-mail ou senha inválidos.';
+  if (m.includes('user already registered')) return 'Este e-mail já está cadastrado.';
+  if (m.includes('password should be at least')) {
+    return 'A senha deve ter pelo menos 6 caracteres.';
   }
-}
-
-function saveUsers(users: StoredUser[]) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
-
-function loadSession(): User | null {
-  try {
-    const raw = localStorage.getItem(SESSION_KEY);
-    return raw ? (JSON.parse(raw) as User) : null;
-  } catch {
-    return null;
+  if (m.includes('email not confirmed')) {
+    return 'E-mail não confirmado. Verifique sua caixa de entrada.';
   }
-}
-
-interface ProgressSnapshot {
-  unitScores: Record<number, number>;
-  unitCompleted: Record<number, boolean>;
-}
-
-function loadProgress(): ProgressSnapshot {
-  try {
-    const raw = localStorage.getItem(PROGRESS_KEY);
-    if (!raw) return { unitScores: {}, unitCompleted: {} };
-    const parsed = JSON.parse(raw) as Partial<ProgressSnapshot>;
-    return {
-      unitScores: parsed.unitScores ?? {},
-      unitCompleted: parsed.unitCompleted ?? {},
-    };
-  } catch {
-    return { unitScores: {}, unitCompleted: {} };
+  if (m.includes('unable to validate email')) return 'E-mail inválido.';
+  if (m.includes('rate limit')) {
+    return 'Muitas tentativas. Aguarde alguns segundos e tente novamente.';
   }
+  return message;
 }
 
-function saveProgress(p: ProgressSnapshot) {
-  localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
+interface AuthResult {
+  ok: boolean;
+  error?: string;
+}
+
+interface RegisterResult extends AuthResult {
+  /** True quando o Supabase exige confirmacao de e-mail antes do login. */
+  needsConfirmation?: boolean;
 }
 
 interface AppContextType {
   page: Page;
   navigateTo: (page: Page) => void;
   user: User | null;
-  setUser: (user: User | null) => void;
-  register: (name: string, email: string, password: string) => { ok: boolean; error?: string };
-  login: (email: string, password: string) => { ok: boolean; error?: string };
-  logout: () => void;
+  /** True enquanto a sessao inicial / login esta sendo carregada. */
+  authLoading: boolean;
+  register: (name: string, email: string, password: string) => Promise<RegisterResult>;
+  login: (email: string, password: string) => Promise<AuthResult>;
+  logout: () => Promise<void>;
 
   currentUnit: number;
   setCurrentUnit: (id: number) => void;
@@ -91,7 +107,6 @@ interface AppContextType {
   atividade12Submitted: boolean;
   setAtividade12Submitted: (v: boolean) => void;
 
-  /* Praticas com multiplos campos texto + dicas progressivas */
   guidedPracticeFields: Record<string, string>;
   setGuidedPracticeField: (key: string, value: string) => void;
   guidedPracticeAttempts: number;
@@ -99,7 +114,6 @@ interface AppContextType {
   guidedPracticeSubmitted: boolean;
   setGuidedPracticeSubmitted: (v: boolean) => void;
 
-  /* legacy guided practice (Unidades 2..5) */
   guidedPracticeSelected: number[];
   setGuidedPracticeSelected: (a: number[]) => void;
 
@@ -120,11 +134,21 @@ interface AppContextType {
   challengeSubmitted: boolean;
   setChallengeSubmitted: (v: boolean) => void;
 
-  /* Persistencia de progresso entre unidades */
-  unitScores: Record<number, number>;
+  userProgress: UserProgress;
+  markPageVisited: (page: Page) => void;
+  markContentBlockRead: (unitId: number, blockId: string) => void;
+  markActivityCompleted: (unitId: number, activityKey: string) => void;
   setUnitScore: (unitId: number, score: number) => void;
-  unitCompleted: Record<number, boolean>;
   markUnitCompleted: (unitId: number) => void;
+  getUnitStatus: (unitId: number) => UnitStatus;
+  getUnitProgressPercent: (unitId: number) => number;
+  isUnitUnlocked: (unitId: number) => boolean;
+  getUnitProgress: (unitId: number) => UnitProgress | undefined;
+  resumeProgress: () => void;
+
+  /* Backward-compat usado por paginas existentes */
+  unitScores: Record<number, number>;
+  unitCompleted: Record<number, boolean>;
 
   resetUnitProgress: () => void;
 }
@@ -132,8 +156,9 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | null>(null);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [page, setPage] = useState<Page>(() => (loadSession() ? 'home' : 'login'));
-  const [user, setUserState] = useState<User | null>(loadSession);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [page, setPage] = useState<Page>('login');
+  const [user, setUser] = useState<User | null>(null);
   const [currentUnit, setCurrentUnit] = useState(1);
 
   const [situationProblemRead, setSituationProblemRead] = useState(false);
@@ -169,60 +194,259 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [challengeAnswers, setChallengeAnswers] = useState<Record<string, string>>({});
   const [challengeSubmitted, setChallengeSubmitted] = useState(false);
 
-  const initialProgress = loadProgress();
-  const [unitScores, setUnitScores] = useState<Record<number, number>>(initialProgress.unitScores);
-  const [unitCompleted, setUnitCompleted] = useState<Record<number, boolean>>(initialProgress.unitCompleted);
+  const [userProgress, setUserProgress] = useState<UserProgress>(() => emptyUserProgress(''));
 
-  const navigateTo = (p: Page) => setPage(p);
+  /* Scoreboard derivado para paginas legadas (unitScores / unitCompleted). */
+  const unitScores: Record<number, number> = {};
+  const unitCompleted: Record<number, boolean> = {};
+  Object.values(userProgress.units).forEach((u) => {
+    if (u.score !== undefined) unitScores[u.unitId] = u.score;
+    if (u.completed) unitCompleted[u.unitId] = true;
+  });
 
-  const setUser = (u: User | null) => {
-    setUserState(u);
-    if (u) localStorage.setItem(SESSION_KEY, JSON.stringify(u));
-    else localStorage.removeItem(SESSION_KEY);
-  };
+  /* Ref para evitar dependencia circular nos efeitos. */
+  const progressRef = useRef(userProgress);
+  progressRef.current = userProgress;
 
-  const register = (name: string, email: string, password: string) => {
-    const users = loadUsers();
-    if (users.find((u) => u.email.toLowerCase() === email.toLowerCase())) {
-      return { ok: false, error: 'Este e-mail já está cadastrado.' };
+  /* ─── Inicializacao da sessao + listener de auth ──────────── */
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function applySession(session: Session) {
+      const u = session.user;
+      const displayName =
+        (u.user_metadata?.name as string | undefined) ??
+        u.email?.split('@')[0] ??
+        'Aluno';
+      setUser({ name: displayName, email: u.email ?? '' });
+
+      const loaded = await loadOrMigrateUserProgress(u.id, u.email ?? '');
+      if (!mounted) return;
+      setUserProgress(loaded);
+      setCurrentUnit(loaded.currentUnitId || 1);
+      setPage('home');
     }
-    const updated = [...users, { name, email, password }];
-    saveUsers(updated);
+
+    async function bootstrap() {
+      const { data } = await supabase.auth.getSession();
+      if (!mounted) return;
+      if (data.session) {
+        await applySession(data.session);
+      }
+      if (mounted) setAuthLoading(false);
+    }
+
+    bootstrap();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!mounted) return;
+      if (event === 'SIGNED_IN' && session) {
+        setAuthLoading(true);
+        applySession(session).finally(() => {
+          if (mounted) setAuthLoading(false);
+        });
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null);
+        setUserProgress(emptyUserProgress(''));
+        setPage('login');
+      }
+    });
+
+    /* Garante que o ultimo save (em debounce) seja efetivado quando
+     * o usuario fecha a aba ou recarrega a pagina. */
+    const onBeforeUnload = () => flushPendingSave();
+    window.addEventListener('beforeunload', onBeforeUnload);
+
+    return () => {
+      mounted = false;
+      authListener.subscription.unsubscribe();
+      window.removeEventListener('beforeunload', onBeforeUnload);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* ─── API de progresso ─────────────────────────────────────── */
+
+  /** Atualiza progresso (state) e agenda persistencia no Supabase. */
+  const persist = (next: UserProgress) => {
+    setUserProgress(next);
+    if (next.userId) saveUserProgress(next);
+  };
+
+  const patchUnit = (unitId: number, patch: Partial<UnitProgress>) => {
+    const next = updateUnitProgress(progressRef.current, unitId, patch);
+    persist(next);
+  };
+
+  const navigateTo = (p: Page) => {
+    setPage(p);
+    if (UNIT_PAGES.includes(p) && progressRef.current.userId) {
+      const unitId = currentUnit;
+      const prev = progressRef.current.units[unitId];
+      const visited = prev?.visitedPages ?? [];
+      const nextVisited = visited.includes(p) ? visited : [...visited, p];
+      const next: UserProgress = {
+        ...progressRef.current,
+        currentUnitId: unitId,
+        lastPage: p,
+        units: {
+          ...progressRef.current.units,
+          [unitId]: {
+            ...(prev ?? {
+              unitId,
+              lastPage: p,
+              visitedPages: [],
+              contentBlocksRead: [],
+              completedActivities: [],
+              challengeCompleted: false,
+              completed: false,
+              startedAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            }),
+            unitId,
+            lastPage: p,
+            visitedPages: nextVisited,
+            updatedAt: new Date().toISOString(),
+          },
+        },
+      };
+      persist(next);
+    } else if (progressRef.current.userId) {
+      persist({ ...progressRef.current, lastPage: p });
+    }
+  };
+
+  /* ─── Auth (Supabase) ──────────────────────────────────────── */
+
+  const register = async (
+    name: string,
+    email: string,
+    password: string,
+  ): Promise<RegisterResult> => {
+    const { data, error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: { data: { name: name.trim() } },
+    });
+    if (error) return { ok: false, error: translateAuthError(error.message) };
+    /* Se nao houver sessao, o Supabase espera confirmacao de e-mail.
+     * O onAuthStateChange so vai disparar apos o usuario confirmar. */
+    const needsConfirmation = !data.session;
+    return { ok: true, needsConfirmation };
+  };
+
+  const login = async (email: string, password: string): Promise<AuthResult> => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+    if (error) return { ok: false, error: translateAuthError(error.message) };
+    /* onAuthStateChange dispara SIGNED_IN e applySession cuida do resto. */
     return { ok: true };
   };
 
-  const login = (email: string, password: string) => {
-    const users = loadUsers();
-    const found = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-    );
-    if (!found) return { ok: false, error: 'E-mail ou senha inválidos.' };
-    setUser({ name: found.name, email: found.email });
-    return { ok: true };
+  const logout = async (): Promise<void> => {
+    flushPendingSave();
+    await supabase.auth.signOut();
+    /* onAuthStateChange dispara SIGNED_OUT e reseta o estado. */
   };
 
-  const logout = () => {
-    setUser(null);
-    setPage('login');
+  /* ─── API de progresso ─────────────────────────────────────── */
+
+  const markPageVisited = (p: Page) => {
+    if (!UNIT_PAGES.includes(p)) return;
+    const unitId = currentUnit;
+    const prev = progressRef.current.units[unitId];
+    const visited = prev?.visitedPages ?? [];
+    if (visited.includes(p)) return;
+    patchUnit(unitId, {
+      lastPage: p,
+      visitedPages: [...visited, p],
+    });
+  };
+
+  const markContentBlockRead = (unitId: number, blockId: string) => {
+    const prev = progressRef.current.units[unitId];
+    const list = prev?.contentBlocksRead ?? [];
+    if (list.includes(blockId)) return;
+    patchUnit(unitId, { contentBlocksRead: [...list, blockId] });
+  };
+
+  const markActivityCompleted = (unitId: number, activityKey: string) => {
+    const prev = progressRef.current.units[unitId];
+    const list = prev?.completedActivities ?? [];
+    if (list.includes(activityKey)) return;
+    const challengeCompleted =
+      activityKey === 'challenge' ? true : prev?.challengeCompleted ?? false;
+    patchUnit(unitId, {
+      completedActivities: [...list, activityKey],
+      challengeCompleted,
+    });
   };
 
   const setUnitScore = (unitId: number, score: number) => {
-    const next = { ...unitScores, [unitId]: score };
-    setUnitScores(next);
-    saveProgress({ unitScores: next, unitCompleted });
+    patchUnit(unitId, { score });
   };
 
   const markUnitCompleted = (unitId: number) => {
-    const next = { ...unitCompleted, [unitId]: true };
-    setUnitCompleted(next);
-    saveProgress({ unitScores, unitCompleted: next });
+    patchUnit(unitId, { completed: true });
+  };
+
+  const wrappedSetAtividade11Submitted = (v: boolean) => {
+    setAtividade11Submitted(v);
+    if (v) markActivityCompleted(currentUnit, 'atividade-1-1');
+  };
+  const wrappedSetAtividade12Submitted = (v: boolean) => {
+    setAtividade12Submitted(v);
+    if (v) markActivityCompleted(currentUnit, 'atividade-1-2');
+  };
+  const wrappedSetGuidedPracticeSubmitted = (v: boolean) => {
+    setGuidedPracticeSubmitted(v);
+    if (v) markActivityCompleted(currentUnit, 'guided-practice');
+  };
+  const wrappedSetIndependentPracticeSubmitted = (v: boolean) => {
+    setIndependentPracticeSubmitted(v);
+    if (v) markActivityCompleted(currentUnit, 'independent-practice');
+  };
+  const wrappedSetFinalAssessmentSubmitted = (v: boolean) => {
+    setFinalAssessmentSubmitted(v);
+    if (v) markActivityCompleted(currentUnit, 'final-assessment');
+  };
+  const wrappedSetChallengeSubmitted = (v: boolean) => {
+    setChallengeSubmitted(v);
+    if (v) markActivityCompleted(currentUnit, 'challenge');
+  };
+  const wrappedSetPriorKnowledgeScore = (s: number) => {
+    setPriorKnowledgeScore(s);
+    patchUnit(currentUnit, { priorScore: s });
+  };
+
+  const getUnitStatus = (unitId: number) => unitStatus(unitId, progressRef.current);
+
+  const getUnitProgressPercent = (unitId: number) =>
+    unitProgressPercent(unitId, progressRef.current);
+
+  const isUnitUnlockedFn = (unitId: number) => isUnitUnlocked(unitId, progressRef.current);
+
+  const getUnitProgress = (unitId: number) => progressRef.current.units[unitId];
+
+  const resumeProgress = () => {
+    const p = progressRef.current;
+    if (!p.userId) return;
+    const unitId = p.currentUnitId || 1;
+    setCurrentUnit(unitId);
+    const target = p.units[unitId]?.lastPage ?? 'welcome';
+    navigateTo(target);
   };
 
   const setMiniActivityAnswer = (blockId: string, value: string) =>
     setMiniActivityAnswers((prev) => ({ ...prev, [blockId]: value }));
 
-  const revealMiniActivity = (blockId: string) =>
+  const revealMiniActivity = (blockId: string) => {
     setMiniActivityRevealed((prev) => ({ ...prev, [blockId]: true }));
+    if (currentUnit) markContentBlockRead(currentUnit, blockId);
+  };
 
   const setGuidedPracticeField = (key: string, value: string) =>
     setGuidedPracticeFields((prev) => ({ ...prev, [key]: value }));
@@ -261,7 +485,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         page,
         navigateTo,
         user,
-        setUser,
+        authLoading,
         register,
         login,
         logout,
@@ -272,7 +496,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         priorKnowledgeAnswers,
         setPriorKnowledgeAnswers,
         priorKnowledgeScore,
-        setPriorKnowledgeScore,
+        setPriorKnowledgeScore: wrappedSetPriorKnowledgeScore,
         miniActivityAnswers,
         setMiniActivityAnswer,
         miniActivityRevealed,
@@ -282,39 +506,48 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         atividade11Answers,
         setAtividade11Answers,
         atividade11Submitted,
-        setAtividade11Submitted,
+        setAtividade11Submitted: wrappedSetAtividade11Submitted,
         atividade11Score,
         setAtividade11Score,
         atividade12Answer,
         setAtividade12Answer,
         atividade12Submitted,
-        setAtividade12Submitted,
+        setAtividade12Submitted: wrappedSetAtividade12Submitted,
         guidedPracticeFields,
         setGuidedPracticeField,
         guidedPracticeAttempts,
         incrementGuidedPracticeAttempts,
         guidedPracticeSubmitted,
-        setGuidedPracticeSubmitted,
+        setGuidedPracticeSubmitted: wrappedSetGuidedPracticeSubmitted,
         guidedPracticeSelected,
         setGuidedPracticeSelected,
         independentPracticeAnswer,
         setIndependentPracticeAnswer,
         independentPracticeSubmitted,
-        setIndependentPracticeSubmitted,
+        setIndependentPracticeSubmitted: wrappedSetIndependentPracticeSubmitted,
         finalAssessmentAnswers,
         setFinalAssessmentAnswers,
         finalAssessmentScore,
         setFinalAssessmentScore,
         finalAssessmentSubmitted,
-        setFinalAssessmentSubmitted,
+        setFinalAssessmentSubmitted: wrappedSetFinalAssessmentSubmitted,
         challengeAnswers,
         setChallengeAnswers,
         challengeSubmitted,
-        setChallengeSubmitted,
-        unitScores,
+        setChallengeSubmitted: wrappedSetChallengeSubmitted,
+        userProgress,
+        markPageVisited,
+        markContentBlockRead,
+        markActivityCompleted,
         setUnitScore,
-        unitCompleted,
         markUnitCompleted,
+        getUnitStatus,
+        getUnitProgressPercent,
+        isUnitUnlocked: isUnitUnlockedFn,
+        getUnitProgress,
+        resumeProgress,
+        unitScores,
+        unitCompleted,
         resetUnitProgress,
       }}
     >

@@ -1,5 +1,9 @@
 import { Unit } from '../types';
 import { unit1 } from './unit1Data';
+import { unit2 } from './unit2Data';
+import { unit3 } from './unit3Data';
+import { unit4 } from './unit4Data';
+import { unit5 } from './unit5Data';
 
 /*
  * CENTRALIZED UNIT DATA
@@ -258,11 +262,21 @@ export const units: Unit[] = [
   /* eslint-enable */
 
   /* ══════════════════════════════════════════════════════════════
-     UNIDADE 2 – Técnicas de Projeto de Teste
+     UNIDADE 2 – Tipos de Teste de Software
+     Conteudo completo em src/data/unit2Data.ts
   ══════════════════════════════════════════════════════════════ */
-  {
-    id: 2,
-    title: 'Unidade 2',
+  unit2,
+
+  /* ══════════════════════════════════════════════════════════════
+     UNIDADE 2 (legado) — substituida pela versao rica acima.
+     Mantida sob bloco morto para referencia historica do conteudo
+     anterior ("Tecnicas de Projeto de Teste"). Nunca executado.
+  ══════════════════════════════════════════════════════════════ */
+  /* eslint-disable */
+  // @ts-ignore — placeholder legado da Unidade 2
+  ...((true ? [] : [{
+    id: 902,
+    title: 'Unidade 2 (legado)',
     subtitle: 'Técnicas de Projeto de Teste',
     description:
       'Domine as principais técnicas para projetar casos de teste eficazes: Partição por Equivalência, Tabela de Decisão e Transição de Estados.',
@@ -500,14 +514,25 @@ export const units: Unit[] = [
         severity: 'Alta',
       },
     },
-  },
+  } as unknown as Unit]) as Unit[]),
+  /* eslint-enable */
 
   /* ══════════════════════════════════════════════════════════════
-     UNIDADE 3 – Tipos e Níveis de Teste
+     UNIDADE 3 – Técnicas de Teste
+     Conteudo completo em src/data/unit3Data.ts
   ══════════════════════════════════════════════════════════════ */
-  {
-    id: 3,
-    title: 'Unidade 3',
+  unit3,
+
+  /* ══════════════════════════════════════════════════════════════
+     UNIDADE 3 (legado) — substituida pela versao rica acima.
+     Mantida sob bloco morto para referencia historica do conteudo
+     anterior ("Tipos e Niveis de Teste"). Nunca executado.
+  ══════════════════════════════════════════════════════════════ */
+  /* eslint-disable */
+  // @ts-ignore — placeholder legado da Unidade 3
+  ...((true ? [] : [{
+    id: 903,
+    title: 'Unidade 3 (legado)',
     subtitle: 'Tipos e Níveis de Teste',
     description:
       'Entenda os diferentes níveis de teste (unidade, integração, sistema, aceitação) e quando aplicar cada tipo para garantir cobertura completa.',
@@ -746,14 +771,25 @@ export const units: Unit[] = [
         severity: 'Alta',
       },
     },
-  },
+  } as unknown as Unit]) as Unit[]),
+  /* eslint-enable */
 
   /* ══════════════════════════════════════════════════════════════
-     UNIDADE 4 – Gestão de Defeitos
+     UNIDADE 4 – Casos de Teste
+     Conteudo completo em src/data/unit4Data.ts
   ══════════════════════════════════════════════════════════════ */
-  {
-    id: 4,
-    title: 'Unidade 4',
+  unit4,
+
+  /* ══════════════════════════════════════════════════════════════
+     UNIDADE 4 (legado) — substituida pela versao rica acima.
+     Mantida sob bloco morto para referencia historica do conteudo
+     anterior ("Gestao de Defeitos"). Nunca executado.
+  ══════════════════════════════════════════════════════════════ */
+  /* eslint-disable */
+  // @ts-ignore — placeholder legado da Unidade 4
+  ...((true ? [] : [{
+    id: 904,
+    title: 'Unidade 4 (legado)',
     subtitle: 'Gestão de Defeitos',
     description:
       'Aprenda o ciclo de vida de um defeito, como classificar severidade e prioridade, e como escrever relatórios de bug profissionais e acionáveis.',
@@ -998,14 +1034,25 @@ export const units: Unit[] = [
         severity: 'Crítica',
       },
     },
-  },
+  } as unknown as Unit]) as Unit[]),
+  /* eslint-enable */
 
   /* ══════════════════════════════════════════════════════════════
-     UNIDADE 5 – Automação de Testes
+     UNIDADE 5 – Identificação e Registro de Defeitos
+     Conteudo completo em src/data/unit5Data.ts
   ══════════════════════════════════════════════════════════════ */
-  {
-    id: 5,
-    title: 'Unidade 5',
+  unit5,
+
+  /* ══════════════════════════════════════════════════════════════
+     UNIDADE 5 (legado) — substituida pela versao rica acima.
+     Mantida sob bloco morto para referencia historica do conteudo
+     anterior ("Automacao de Testes"). Nunca executado.
+  ══════════════════════════════════════════════════════════════ */
+  /* eslint-disable */
+  // @ts-ignore — placeholder legado da Unidade 5
+  ...((true ? [] : [{
+    id: 905,
+    title: 'Unidade 5 (legado)',
     subtitle: 'Automação de Testes',
     description:
       'Descubra quando e como automatizar testes de software, conheça as principais ferramentas e entenda o ROI da automação em projetos reais.',
@@ -1251,5 +1298,6 @@ export const units: Unit[] = [
         severity: 'Alta',
       },
     },
-  },
+  } as unknown as Unit]) as Unit[]),
+  /* eslint-enable */
 ];

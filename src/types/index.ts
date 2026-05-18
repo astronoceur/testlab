@@ -13,6 +13,7 @@ export type Page =
   | 'login'
   | 'home'
   | 'units'
+  | 'unit-contents'
   | 'welcome'
   | 'objectives'
   | 'situation-problem'

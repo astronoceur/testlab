@@ -5,9 +5,10 @@ import ladybugs from '../assets/ladybug.png';
 type Mode = 'login' | 'register';
 
 const LoginPage: React.FC = () => {
-  const { login, register, navigateTo } = useApp();
+  const { login, register } = useApp();
 
   const [mode, setMode] = useState<Mode>('login');
+  const [submitting, setSubmitting] = useState(false);
 
   // Login fields
   const [loginEmail, setLoginEmail] = useState('');
@@ -22,22 +23,23 @@ const LoginPage: React.FC = () => {
   const [regError, setRegError] = useState('');
   const [regSuccess, setRegSuccess] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError('');
     if (!loginEmail.trim() || !loginPassword.trim()) {
       setLoginError('Preencha e-mail e senha.');
       return;
     }
-    const result = login(loginEmail.trim(), loginPassword);
+    setSubmitting(true);
+    const result = await login(loginEmail.trim(), loginPassword);
+    setSubmitting(false);
     if (!result.ok) {
       setLoginError(result.error ?? 'Erro ao entrar.');
-    } else {
-      navigateTo('home');
     }
+    /* Navegacao para 'home' e feita pelo onAuthStateChange no AppContext. */
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setRegError('');
     setRegSuccess('');
@@ -49,21 +51,27 @@ const LoginPage: React.FC = () => {
       setRegError('E-mail inválido.');
       return;
     }
-    if (regPassword.length < 4) {
-      setRegError('Senha deve ter pelo menos 4 caracteres.');
+    if (regPassword.length < 6) {
+      setRegError('Senha deve ter pelo menos 6 caracteres.');
       return;
     }
     if (regPassword !== regConfirm) {
       setRegError('As senhas não conferem.');
       return;
     }
-    const result = register(regName.trim(), regEmail.trim(), regPassword);
+    setSubmitting(true);
+    const result = await register(regName.trim(), regEmail.trim(), regPassword);
+    setSubmitting(false);
     if (!result.ok) {
       setRegError(result.error ?? 'Erro ao cadastrar.');
-    } else {
-      setRegSuccess('Cadastro realizado! Agora faça login.');
+      return;
+    }
+    if (result.needsConfirmation) {
+      setRegSuccess('Cadastro criado! Verifique seu e-mail para confirmar a conta antes de fazer login.');
       setRegName(''); setRegEmail(''); setRegPassword(''); setRegConfirm('');
-      setTimeout(() => { setMode('login'); setRegSuccess(''); }, 1800);
+    } else {
+      setRegSuccess('Cadastro realizado com sucesso! Entrando...');
+      /* Login automatico: onAuthStateChange ja vai redirecionar. */
     }
   };
 
@@ -154,8 +162,13 @@ const LoginPage: React.FC = () => {
                   ⚠ {loginError}
                 </p>
               )}
-              <button type="submit" className="tl-btn" style={{ marginTop: 4 }}>
-                Entrar →
+              <button
+                type="submit"
+                className="tl-btn"
+                style={{ marginTop: 4, opacity: submitting ? 0.6 : 1 }}
+                disabled={submitting}
+              >
+                {submitting ? 'Entrando...' : 'Entrar →'}
               </button>
             </form>
             <p style={{ fontSize: '0.78rem', color: '#555', marginTop: '0.75rem', textAlign: 'center' }}>
@@ -204,7 +217,7 @@ const LoginPage: React.FC = () => {
                   type="password"
                   value={regPassword}
                   onChange={(e) => { setRegPassword(e.target.value); setRegError(''); }}
-                  placeholder="mínimo 4 caracteres"
+                  placeholder="mínimo 6 caracteres"
                 />
               </div>
               <div>
@@ -227,8 +240,13 @@ const LoginPage: React.FC = () => {
                   ✓ {regSuccess}
                 </p>
               )}
-              <button type="submit" className="tl-btn" style={{ marginTop: 4 }}>
-                Cadastrar ✓
+              <button
+                type="submit"
+                className="tl-btn"
+                style={{ marginTop: 4, opacity: submitting ? 0.6 : 1 }}
+                disabled={submitting}
+              >
+                {submitting ? 'Cadastrando...' : 'Cadastrar ✓'}
               </button>
             </form>
             <p style={{ fontSize: '0.78rem', color: '#555', marginTop: '0.75rem', textAlign: 'center' }}>
