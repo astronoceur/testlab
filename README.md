@@ -133,6 +133,7 @@ A aplicação está publicada na Vercel:
 ## 🎓 Contexto acadêmico
 
 | | |
+|---|---|
 | **Instituição** | Universidade do Estado do Amazonas (UEA) |
 | **Unidade** | Escola Superior de Tecnologia (EST) |
 | **Curso** | Licenciatura em Computação |
