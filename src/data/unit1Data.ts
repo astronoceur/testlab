@@ -1,14 +1,5 @@
 import { Unit } from '../types';
 
-/* ──────────────────────────────────────────────────────────────────
- * UNIDADE 1 — Fundamentos de Teste de Software
- *
- * Conteudo fiel ao documento "TestLab_Unidade1_Fundamentos_de_Teste
- * _de_Software.pdf". Estrutura serve de molde para as proximas
- * unidades: basta criar unit2Data.ts seguindo o mesmo formato e
- * importar em data/units.ts.
- * ────────────────────────────────────────────────────────────────── */
-
 export const unit1: Unit = {
   id: 1,
   title: 'Unidade 1',
@@ -30,7 +21,6 @@ export const unit1: Unit = {
     'Justificar a importância do teste em cada fase do ciclo de desenvolvimento de software, reconhecendo o custo crescente da correção tardia de problemas.',
   ],
 
-  /* ─── 3. Situacao-problema inicial ─────────────────────────── */
   situationProblem: {
     title: 'O Sistema Acadêmico que Aprovou a Todos',
     paragraphs: [
@@ -56,7 +46,6 @@ export const unit1: Unit = {
       'Este cenário ilustra um problema real e recorrente no desenvolvimento de software: a confusão entre "o sistema executa" e "o sistema está correto". Ao longo desta unidade, você aprenderá os conceitos que permitem compreender e prevenir situações como essa.',
   },
 
-  /* ─── 4. Ativacao de conhecimentos previos ─────────────────── */
   priorKnowledgeQuestions: [
     {
       id: 'PK-1',
@@ -107,7 +96,6 @@ export const unit1: Unit = {
     },
   ],
 
-  /* ─── 5. Conteudo teorico (5 blocos) ───────────────────────── */
   theoryBlocks: [
     {
       id: 'bloco-1',
@@ -274,7 +262,6 @@ export const unit1: Unit = {
     },
   ],
 
-  /* ─── 6. Demonstracao com exemplo resolvido ────────────────── */
   demonstration: {
     requirement:
       'O sistema de matrículas de uma universidade deve impedir que um estudante se matricule em uma disciplina quando seu coeficiente de rendimento acadêmico (CRA) for inferior a 5.0. Caso o estudante tente realizar a matrícula nessa condição, o sistema deve exibir a mensagem: "Matrícula não permitida: CRA insuficiente."',
@@ -318,7 +305,6 @@ export const unit1: Unit = {
       'Um único caso de teste bem escolhido — CRA = 4.9 — seria suficiente para revelar esse defeito antes da entrega. A ausência de casos de teste para valores de fronteira é uma das causas mais comuns de defeitos não detectados em sistemas reais.',
   },
 
-  /* ─── 7. Atividade 1.1 — questionario objetivo (8 questoes) ── */
   atividade11: {
     description:
       'Responda às questões a seguir. Cada questão tem apenas uma alternativa correta. Você recebe feedback imediato após cada resposta.',
@@ -461,7 +447,6 @@ export const unit1: Unit = {
     ],
   },
 
-  /* ─── 8. Atividade 1.2 — discussao guiada ──────────────────── */
   atividade12: {
     question:
       'Por que testar software antes de entregá-lo ao usuário é uma prática importante? Considere em sua resposta pelo menos dois dos seguintes aspectos: custo de correção de defeitos, impacto das falhas no usuário, confiança no produto e papel do teste no ciclo de desenvolvimento.',
@@ -502,7 +487,6 @@ export const unit1: Unit = {
     ],
   },
 
-  /* ─── 9. Pratica guiada — cupom de desconto ────────────────── */
   guidedPracticeRich: {
     scenario:
       'Um sistema de compras online permite que o usuário aplique um cupom de desconto no carrinho. O requisito especifica que um cupom só pode ser utilizado uma vez por conta de usuário. Porém, durante os testes, o testador observa que, ao aplicar o cupom, fechar o navegador e reabrir o carrinho, o cupom pode ser aplicado novamente, gerando um segundo desconto indevido.',
@@ -545,7 +529,6 @@ export const unit1: Unit = {
       'O cenário demonstra como um defeito pode não ser aparente durante o uso convencional (aplicar o cupom uma vez na mesma sessão), mas se manifesta como falha quando o usuário altera seu comportamento (fechar e reabrir o navegador). Esse é um exemplo de por que testar apenas o "caminho feliz" é insuficiente: é preciso testar cenários de borda e comportamentos fora do fluxo principal.',
   },
 
-  /* ─── 10. Pratica independente — biblioteca digital ───────── */
   independentPracticeRich: {
     scenario:
       'Um sistema de biblioteca digital permite que usuários realizem a reserva de livros eletrônicos. O requisito estabelece que um usuário só pode ter, simultaneamente, no máximo 3 reservas ativas. Durante o uso do sistema, um usuário com 3 reservas ativas consegue realizar uma quarta reserva acessando a funcionalidade de busca por ISBN e clicando diretamente no botão "Reservar" na página do livro, sem passar pela página do carrinho. O limite de 3 reservas não é verificado nesse fluxo alternativo de reserva.',
@@ -622,7 +605,6 @@ export const unit1: Unit = {
       'Se você teve dificuldade em distinguir o erro do defeito, lembre-se: o erro é humano (o que o desenvolvedor deixou de fazer ou fez errado); o defeito é o resultado disso no código (o que está ausente ou errado no artefato). Revise o Bloco 4 e tente novamente.',
   },
 
-  /* ─── 11. Avaliacao final — 10 questoes (AF-01 a AF-10) ───── */
   finalAssessmentQuestions: [
     {
       id: 'AF-01',
@@ -801,7 +783,6 @@ export const unit1: Unit = {
     'AF-10': ['bloco-1', 'bloco-2', 'bloco-3', 'bloco-4'],
   },
 
-  /* ─── 12. Desafio aplicado final ───────────────────────────── */
   finalChallenge: {
     enunciado:
       'Leia atentamente o cenário a seguir e responda às cinco questões propostas. Utilize os conceitos estudados nesta unidade para fundamentar suas respostas. Esta atividade avalia sua capacidade de transferir o conhecimento para uma situação nova e realista.',
@@ -890,7 +871,6 @@ export const unit1: Unit = {
       'Ao concluir este desafio, você aplicou os cinco conceitos centrais desta unidade a um cenário realista do mercado de software. A capacidade de identificar a cadeia causal erro → defeito → falha e de relacioná-la ao papel do teste é uma competência fundamental para qualquer profissional que atue no desenvolvimento, verificação ou gestão de qualidade de sistemas. Você está pronto para avançar para a próxima unidade.',
   },
 
-  /* ─── Estrutura legada (mantida para compatibilidade) ──────── */
   content: [],
   examples: [],
   guidedPractice: {

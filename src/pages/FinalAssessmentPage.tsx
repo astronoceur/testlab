@@ -20,8 +20,6 @@ const FinalAssessmentPage: React.FC = () => {
   const unit = units.find((u) => u.id === currentUnit)!;
   const questions = unit.finalAssessmentQuestions;
 
-  /* Threshold: 70% para unidades ricas (Unidade 1 padrão CTFL),
-   * 75% para unidades legadas. */
   const isRich = !!unit.theoryBlocks;
   const passingThreshold = isRich ? 70 : 75;
 
@@ -52,12 +50,8 @@ const FinalAssessmentPage: React.FC = () => {
     setFinalAssessmentScore(pct);
     setFinalAssessmentSubmitted(true);
     setUnitScore(currentUnit, pct);
-    /* Mantem o modal aberto — agora em modo "revisao com feedback".
-     * O usuario pode navegar pelas questoes vendo respostas certas
-     * e explicacoes antes de fechar. */
   };
 
-  /* Erros agrupados por bloco de revisao (Unidade 1) */
   const blocksToReview = useMemo(() => {
     if (!finalAssessmentSubmitted) return [] as string[];
     const wrongIds = questions
@@ -81,8 +75,6 @@ const FinalAssessmentPage: React.FC = () => {
     'bloco-5': 'Bloco 5 — Importância do Teste no Ciclo',
   };
 
-  /* Indice inicial: primeira nao respondida (durante o quiz) ou
-   * 0 (quando ja submetido). */
   const initialIndex = (() => {
     if (finalAssessmentSubmitted) return 0;
     const idx = selected.findIndex((s) => s === null);
@@ -115,7 +107,6 @@ const FinalAssessmentPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Card de status */}
         <div className="tl-card" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
             <div>
@@ -143,7 +134,6 @@ const FinalAssessmentPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Resultado apos envio */}
         {finalAssessmentSubmitted && (
           <>
             <div

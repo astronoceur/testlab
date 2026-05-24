@@ -10,12 +10,10 @@ const LoginPage: React.FC = () => {
   const [mode, setMode] = useState<Mode>('login');
   const [submitting, setSubmitting] = useState(false);
 
-  // Login fields
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
 
-  // Register fields
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
@@ -36,7 +34,6 @@ const LoginPage: React.FC = () => {
     if (!result.ok) {
       setLoginError(result.error ?? 'Erro ao entrar.');
     }
-    /* Navegacao para 'home' e feita pelo onAuthStateChange no AppContext. */
   };
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -71,7 +68,6 @@ const LoginPage: React.FC = () => {
       setRegName(''); setRegEmail(''); setRegPassword(''); setRegConfirm('');
     } else {
       setRegSuccess('Cadastro realizado com sucesso! Entrando...');
-      /* Login automatico: onAuthStateChange ja vai redirecionar. */
     }
   };
 
@@ -87,7 +83,7 @@ const LoginPage: React.FC = () => {
       }}
     >
       <div style={{ width: '100%', maxWidth: 380 }}>
-        {/* Brand */}
+
         <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
           <div style={{ fontSize: '3rem', marginBottom: '0.5rem', display: 'flex', justifyContent: 'center' }}><img src={ladybugs} alt="Minha imagem" style={{ width: '150px'}} /></div>
           <h1 className="tl-title" style={{ fontSize: '2rem', margin: 0 }}>
@@ -98,7 +94,6 @@ const LoginPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Tab switcher */}
         <div
           style={{
             display: 'flex',
@@ -130,7 +125,6 @@ const LoginPage: React.FC = () => {
           ))}
         </div>
 
-        {/* ── LOGIN FORM ── */}
         {mode === 'login' && (
           <div className="tl-card">
             <h2 className="tl-title" style={{ fontSize: '1.1rem', marginTop: 0, marginBottom: '1rem' }}>
@@ -183,7 +177,6 @@ const LoginPage: React.FC = () => {
           </div>
         )}
 
-        {/* ── REGISTER FORM ── */}
         {mode === 'register' && (
           <div className="tl-card">
             <h2 className="tl-title" style={{ fontSize: '1.1rem', marginTop: 0, marginBottom: '1rem' }}>

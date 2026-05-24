@@ -1,29 +1,5 @@
 import { Unit } from '../types';
 
-/* ──────────────────────────────────────────────────────────────────
- * UNIDADE 5 — Identificação e Registro de Defeitos
- *
- * Conteudo fiel ao documento
- * "TestLab_Unidade5_Identificacao_e_Registro_de_Defeitos.docx.pdf".
- * Estrutura segue o mesmo molde das Unidades 1, 2, 3 e 4.
- *
- * Mapeamento das atividades para os slots da plataforma:
- *   - Atividade 5.1 (8 classificacoes de defeitos) + Atividade 5.3
- *     (6 cenarios de severidade x prioridade) -> atividade11 com 14
- *     questoes objetivas. Os enunciados de 5.3 sao convertidos em
- *     multi-choice com pares "Severidade/Prioridade".
- *   - Atividade 5.2 (elaborar bug report completo) -> atividade12
- *     discursiva com sample answer cobrindo os 18 campos e rubrica.
- *   - Pratica Guiada (RF-009 e-mail de confirmacao) ->
- *     guidedPracticeRich.
- *   - Pratica Independente (RF-042 certificado carga horaria) ->
- *     independentPracticeRich.
- *   - Avaliacao Final (10 questoes AF-01 a AF-10) ->
- *     finalAssessmentQuestions.
- *   - Desafio Aplicado (3 bug reports para sistema de hotel) ->
- *     finalChallenge (3 campos, um por defeito A/B/C).
- * ────────────────────────────────────────────────────────────────── */
-
 export const unit5: Unit = {
   id: 5,
   title: 'Unidade 5',
@@ -48,7 +24,6 @@ export const unit5: Unit = {
     'Aplicar boas práticas de comunicação escrita no relato de problemas, garantindo objetividade e precisão.',
   ],
 
-  /* ─── 3. Situacao-problema inicial ─────────────────────────── */
   situationProblem: {
     title: 'O Bug que Ninguém Conseguia Corrigir',
     paragraphs: [
@@ -66,7 +41,6 @@ export const unit5: Unit = {
       'A qualidade de um relatório de bug determina diretamente a velocidade com que o defeito será corrigido. Um relatório completo e preciso permite ao desenvolvedor reproduzir o problema em minutos. Um relatório vago pode fazer o defeito ficar aberto por semanas ou ser fechado como "não reproduzível". Nesta unidade, você aprenderá a estrutura, os critérios de qualidade e as boas práticas de comunicação que transformam um defeito encontrado em um defeito corrigido.',
   },
 
-  /* ─── 4. Ativacao de conhecimentos previos ─────────────────── */
   priorKnowledgeQuestions: [
     {
       id: 'PK5-1',
@@ -118,7 +92,6 @@ export const unit5: Unit = {
     },
   ],
 
-  /* ─── 5. Conteudo teorico (12 blocos) ──────────────────────── */
   theoryBlocks: [
     {
       id: 'bloco-1',
@@ -488,7 +461,6 @@ export const unit5: Unit = {
     },
   ],
 
-  /* ─── 6. Demonstracao com exemplo resolvido ───────────────── */
   demonstration: {
     requirement:
       'RF-031: A plataforma deve permitir que o aluno envie atividades em formato PDF com tamanho máximo de 10 MB. Arquivos acima de 10 MB devem ser rejeitados com "Arquivo muito grande. O tamanho máximo permitido é de 10 MB." Arquivos em outro formato devem ser rejeitados com "Formato inválido. Apenas arquivos PDF são aceitos."',
@@ -540,12 +512,10 @@ export const unit5: Unit = {
       'O bug report completo nasce do caso de teste, é estruturado nos 18 campos essenciais e respeita os critérios de qualidade: título específico (O QUE / ONDE / CONDIÇÃO), passos atômicos com dados exatos, RE e RO observáveis, evidências com contexto, e classificação (tipo + severidade + prioridade) com justificativa. Esse padrão deve ser aplicado a qualquer defeito identificado.',
   },
 
-  /* ─── 7+9. Atividade 5.1 (8) + 5.3 (6) = 14 questoes ──────── */
   atividade11: {
     description:
       'Esta atividade combina os exercícios 5.1 (Classificação de Defeitos — 8 cenários) e 5.3 (Severidade e Prioridade — 6 situações). Você responde uma questão por vez em janelas separadas e recebe feedback imediato após cada escolha.',
     questions: [
-      /* ─── Atividade 5.1 — Classificacao (8) ─── */
       {
         id: '5.1.1',
         question:
@@ -683,7 +653,6 @@ export const unit5: Unit = {
         reviewBlock: 'bloco-4',
       },
 
-      /* ─── Atividade 5.3 — Severidade x Prioridade (6) ─── */
       {
         id: '5.3.1',
         question:
@@ -789,7 +758,6 @@ export const unit5: Unit = {
     ],
   },
 
-  /* ─── 8. Atividade 5.2 — discursiva (elaborar bug report) ─── */
   atividade12: {
     question:
       'Cenário: Sistema de gestão acadêmica — módulo de notas.\n\nRF-017: O sistema deve calcular automaticamente a média final ao final do semestre como média aritmética de P1, P2, P3. Resultado com duas casas decimais. Média >= 7,0: "Aprovado"; média < 7,0: "Reprovado".\n\nCT-NOT-005: Média com valores idênticos (P1=8,0; P2=8,0; P3=8,0 — média esperada: 8,00 — Aprovado)\n\nComportamento observado: ao inserir P1=8,0, P2=8,0, P3=8,0 e clicar em "Calcular Média", o sistema exibiu "Média final: 7,99 — Reprovado".\n\nAmbiente: Windows 10, Chrome 119, versão 3.1.2 (homologação). Usuário: professor@faculdade.edu.\n\nElabore um RELATÓRIO DE BUG COMPLETO para esse defeito. Sua resposta deve incluir, claramente identificados, os 18 campos: ID, Título, Sistema/Módulo, Ambiente de teste, Requisito relacionado, Caso de teste relacionado, Pré-condições, Dados utilizados, Passos para reprodução, Resultado esperado, Resultado obtido, Evidências, Tipo de defeito, Severidade, Prioridade, Status, Responsável sugerido e Observações adicionais.',
@@ -832,7 +800,6 @@ export const unit5: Unit = {
     ],
   },
 
-  /* ─── 10. Pratica Guiada — RF-009 e-mail confirmacao ──────── */
   guidedPracticeRich: {
     scenario:
       'Sistema: Aplicativo de agendamento de consultas médicas.\n\nRF-009: O sistema deve enviar e-mail de confirmação ao paciente em até 5 minutos após a confirmação. O e-mail deve conter: nome do médico, data/horário, endereço da clínica e instruções de preparo quando aplicáveis.\n\nCT-AGE-004: Verificar envio de e-mail de confirmação após agendamento bem-sucedido.\n\nComportamento observado: o testador realizou o agendamento com sucesso (sistema confirmou na tela). Aguardou 15 minutos. Nenhum e-mail chegou. Verificou pasta de spam — vazia. O agendamento aparece corretamente na lista do sistema.',
@@ -897,7 +864,6 @@ export const unit5: Unit = {
       'Destaque para os passos que incluem o tempo de espera (15 minutos) — dado crítico para defeito de temporização — e as evidências cobrindo tanto a confirmação do agendamento quanto a ausência do e-mail. A severidade média é coerente porque a função principal funcionou, mas a prioridade alta reflete o impacto real (pacientes podem faltar à consulta).',
   },
 
-  /* ─── 11. Pratica Independente — RF-042 certificado ───────── */
   independentPracticeRich: {
     scenario:
       'Sistema: Plataforma de cursos online — módulo de certificados.\n\nRF-042: O sistema deve gerar e disponibilizar o certificado automaticamente quando o aluno: (1) completar 100% das aulas; e (2) atingir nota mínima de 7,0. O certificado deve exibir: nome completo, título do curso, data de conclusão e carga horária.\n\nCT-CERT-001: Verificar geração do certificado para aluno com 100% das aulas e nota >= 7,0.\n\nComportamento observado: o testador completou 100% das aulas do curso "Python para Iniciantes" (40 horas) e obteve nota 8,5. Ao clicar em "Baixar Certificado", o PDF é gerado. Porém, o campo "Carga Horária" exibe "0 horas" em vez de "40 horas".\n\nAmbiente: Windows 11 / Firefox 121 / Plataforma versão 5.0.1 (produção). Usuário: aluno.teste@email.com.',
@@ -990,7 +956,6 @@ export const unit5: Unit = {
       'Pontos a revisar:\n• Pré-condições insuficientes? Não especificou que o aluno deve ter completado 100% E obtido nota acima de 7,0 (sem essas condições, o botão "Baixar Certificado" pode não estar disponível).\n• RE/RO impreciso? Não especificou qual campo está incorreto nem qual valor foi exibido — "O certificado estava errado" não orienta o desenvolvedor.\nRevise os Blocos 4, 6 e 7.',
   },
 
-  /* ─── 12. Avaliacao Final — 10 questoes (AF5-01 a AF5-10) ── */
   finalAssessmentQuestions: [
     {
       id: 'AF5-01',
@@ -1164,7 +1129,6 @@ export const unit5: Unit = {
     'AF5-10': ['bloco-9'],
   },
 
-  /* ─── 13. Desafio Aplicado Final — 3 bug reports ──────────── */
   finalChallenge: {
     enunciado:
       'Você é membro do time de QA testando um sistema de reservas de hotel em homologação. Após executar os casos de teste, identificou TRÊS defeitos distintos. Produza um relatório de bug COMPLETO para cada um (Defeito A, B e C), incluindo os 18 campos essenciais (ID, Título, Sistema/Módulo, Ambiente, Requisito, CT, Pré-condições, Dados, Passos, RE, RO, Evidências, Tipo, Severidade, Prioridade, Status, Responsável, Observações).',
@@ -1241,7 +1205,6 @@ export const unit5: Unit = {
       'Você produziu três bug reports cobrindo o espectro essencial: um defeito de cálculo na tela (alta severidade), um defeito de validação de dados (alta prioridade por impacto na integridade) e um defeito de formato (baixa severidade, média prioridade). Essa capacidade de identificar, classificar e comunicar defeitos é uma das competências mais valorizadas em profissionais de qualidade de software. Você concluiu a Unidade 5 e o ciclo principal da plataforma Test Lab — está preparado para os próximos passos: automação, gestão ágil de qualidade, testes de desempenho e segurança, e certificações como o CTFL/ISTQB Foundation Level.',
   },
 
-  /* ─── Estrutura legada (mantida para compatibilidade) ──────── */
   content: [],
   examples: [],
   guidedPractice: {

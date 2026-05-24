@@ -1,29 +1,5 @@
 import { Unit } from '../types';
 
-/* ──────────────────────────────────────────────────────────────────
- * UNIDADE 4 — Casos de Teste
- *
- * Conteudo fiel ao documento
- * "TestLab_Unidade4_Casos_de_Teste.docx.pdf".
- * Estrutura segue o mesmo molde das Unidades 1, 2 e 3.
- *
- * Mapeamento das atividades para os slots da plataforma:
- *   - Atividade 4.1 (criar caso de teste a partir do RF-012) ->
- *     atividade12 (discursiva: o aluno escreve o caso de teste
- *     completo num campo unico, com sample answer cobrindo os 10
- *     campos e rubrica de 4 niveis).
- *   - Atividade 4.2 (avaliacao pratica de 5 casos prontos) ->
- *     atividade11 (5 questoes objetivas com modal por questao e
- *     feedback imediato).
- *   - Pratica Guiada (RF-008 cancelamento) -> guidedPracticeRich.
- *   - Pratica Independente (RF-015 estoque) ->
- *     independentPracticeRich.
- *   - Avaliacao Final (10 questoes AF-01 a AF-10) ->
- *     finalAssessmentQuestions.
- *   - Desafio Aplicado (3 casos de teste para RF-021/022/023) ->
- *     finalChallenge (3 campos, um por caso de teste).
- * ────────────────────────────────────────────────────────────────── */
-
 export const unit4: Unit = {
   id: 4,
   title: 'Unidade 4',
@@ -46,7 +22,6 @@ export const unit4: Unit = {
     'Aplicar critérios de qualidade na escrita de casos de teste, garantindo objetividade, precisão e rastreabilidade com requisitos.',
   ],
 
-  /* ─── 3. Situacao-problema inicial ─────────────────────────── */
   situationProblem: {
     title: 'O Defeito que Ninguém Conseguia Reproduzir',
     paragraphs: [
@@ -64,7 +39,6 @@ export const unit4: Unit = {
       'O teste sem documentação adequada é, na prática, um teste não verificável. Um caso de teste bem estruturado não é burocracia: é a garantia de que o que foi testado pode ser comunicado, repetido, verificado e usado como evidência de qualidade do software.',
   },
 
-  /* ─── 4. Ativacao de conhecimentos previos ─────────────────── */
   priorKnowledgeQuestions: [
     {
       id: 'PK4-1',
@@ -116,7 +90,6 @@ export const unit4: Unit = {
     },
   ],
 
-  /* ─── 5. Conteudo teorico (9 blocos) ───────────────────────── */
   theoryBlocks: [
     {
       id: 'bloco-1',
@@ -390,7 +363,6 @@ export const unit4: Unit = {
     },
   ],
 
-  /* ─── 6. Demonstracao com exemplo resolvido ───────────────── */
   demonstration: {
     requirement:
       'RF-005: O sistema de e-commerce deve aplicar desconto de 10% no valor total do pedido quando o cupom "DESCONTO10" for inserido no campo de cupom da tela de checkout. O cupom deve ser válido apenas para pedidos com valor total superior a R$ 50,00. Cupons inválidos, expirados ou aplicados a pedidos abaixo de R$ 50,00 devem exibir a mensagem de erro correspondente.',
@@ -442,7 +414,6 @@ export const unit4: Unit = {
       'O caso de teste completo nasce do requisito (RF-005), é estruturado nos 10 campos essenciais (ID, título, objetivo, requisito, pré-condições, dados, passos, resultado esperado, resultado obtido, status) e respeita os critérios de qualidade: dados específicos, passos atômicos, resultado esperado observável com múltiplas condições verificáveis. Esse padrão pode (e deve) ser aplicado a qualquer requisito.',
   },
 
-  /* ─── 7. Atividade 4.1 — discursiva (criar caso de teste) ─── */
   atividade12: {
     question:
       'RF-012: O aluno pode se matricular em uma disciplina optativa apenas se não houver conflito de horário com as disciplinas já matriculadas no mesmo período. Se houver conflito, o sistema deve exibir: "Conflito de horário detectado: [nome da disciplina conflitante]. Matrícula não realizada."\n\nDisciplinas disponíveis: (a) Matemática Discreta — segunda e quarta, 14h–16h; (b) Inteligência Artificial — segunda e quarta, 15h–17h (conflita com Matemática Discreta); (c) Banco de Dados Avançado — terça e quinta, 10h–12h (sem conflito).\n\nElabore um caso de teste COMPLETO para verificar o comportamento do sistema quando o aluno tenta se matricular em uma disciplina com conflito de horário. Sua resposta deve incluir, claramente identificados, os 10 campos: ID, Título, Objetivo, Requisito relacionado, Pré-condições, Dados de entrada, Passos de execução, Resultado esperado, Resultado obtido e Status.',
@@ -484,7 +455,6 @@ export const unit4: Unit = {
     ],
   },
 
-  /* ─── 8. Atividade 4.2 — avaliacao pratica (5 questoes) ──── */
   atividade11: {
     description:
       'Avaliação prática de 5 casos de teste prontos. Para cada caso, identifique se ele está adequado ou se possui problemas de qualidade, escolhendo o diagnóstico mais completo entre as alternativas. Você recebe feedback imediato após cada resposta.',
@@ -577,7 +547,6 @@ export const unit4: Unit = {
     ],
   },
 
-  /* ─── 9. Pratica Guiada — RF-008 cancelamento de consulta ─── */
   guidedPracticeRich: {
     scenario:
       'RF-008: O sistema deve permitir o cancelamento de uma consulta agendada pelo próprio paciente, desde que o cancelamento seja realizado com pelo menos 24 horas de antecedência em relação ao horário da consulta. Cancelamentos com menos de 24 horas de antecedência não são permitidos e o sistema deve exibir a mensagem: "Cancelamento não permitido. O prazo mínimo de 24 horas já foi ultrapassado."',
@@ -641,7 +610,6 @@ export const unit4: Unit = {
       'As pré-condições controlam o elemento mais crítico: a antecedência de mais de 24 horas (26 horas no exemplo). Os dados de entrada especificam a consulta e a ação. Os passos incluem a verificação do diálogo de confirmação — um comportamento intermediário importante. O resultado esperado descreve a mensagem, o estado da consulta e o efeito no calendário do médico.',
   },
 
-  /* ─── 10. Pratica Independente — RF-015 estoque ───────────── */
   independentPracticeRich: {
     scenario:
       'RF-015: Ao registrar a entrada de mercadoria, o sistema deve atualizar automaticamente a quantidade em estoque do produto. O sistema deve aceitar apenas quantidades inteiras positivas (maiores que zero). Quantidades zero, negativas ou não numéricas devem ser rejeitadas com a mensagem: "Quantidade inválida. Informe um número inteiro positivo." O gerente informa: código do produto, nome do produto, quantidade recebida e fornecedor.',
@@ -733,7 +701,6 @@ export const unit4: Unit = {
       'Pontos a revisar:\n• Resultado esperado incompleto? Lembre-se: além da mensagem de erro, é preciso verificar se o efeito colateral indesejado (alteração do estoque) NÃO ocorreu.\n• Pré-condições insuficientes? Sem o estoque inicial definido, é impossível verificar se ele foi ou não alterado.\nRevise os Blocos 4 e 6.',
   },
 
-  /* ─── 11. Avaliacao Final — 10 questoes (AF4-01 a AF4-10) ─── */
   finalAssessmentQuestions: [
     {
       id: 'AF4-01',
@@ -910,7 +877,6 @@ export const unit4: Unit = {
     'AF4-10': ['bloco-9'],
   },
 
-  /* ─── 12. Desafio Aplicado Final — 3 casos de teste ───────── */
   finalChallenge: {
     enunciado:
       'Você é testador em um projeto de sistema de reservas de hospedagem online. A equipe acaba de concluir a implementação do módulo de reservas. Produza TRÊS casos de teste completos: um para o fluxo principal, um para uma entrada inválida e um para uma situação-limite. Cada caso deve incluir os 10 campos essenciais (ID, Título, Objetivo, Requisito, Pré-condições, Dados de entrada, Passos, Resultado esperado, Resultado obtido, Status).',
@@ -981,7 +947,6 @@ export const unit4: Unit = {
       'Você produziu um conjunto de três casos que cobre o espectro essencial da verificação: fluxo principal (RF-021), entrada inválida (RF-022) e situação-limite (RF-023). A capacidade de transformar um conjunto de requisitos em casos de teste estruturados, rastreáveis e reproduzíveis é uma das habilidades mais valorizadas em profissionais de qualidade de software. Você concluiu a Unidade 4 e está pronto para avançar.',
   },
 
-  /* ─── Estrutura legada (mantida para compatibilidade) ──────── */
   content: [],
   examples: [],
   guidedPractice: {

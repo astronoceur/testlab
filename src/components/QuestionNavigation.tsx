@@ -1,31 +1,12 @@
 import React from 'react';
 
-/* ──────────────────────────────────────────────────────────────────
- * QuestionNavigation
- * ───────────────────
- * Botoes padrao do rodape do modal de questao:
- *   - Anterior
- *   - Proxima                (questoes intermediarias)
- *   - Concluir               (ultima questao em modo immediate)
- *   - Enviar Avaliacao       (ultima questao em modo deferred)
- *   - Responder              (modo immediate, opcional, ainda nao revelada)
- *
- * Mantem a logica de habilita/desabilita centralizada para evitar
- * duplicacao entre paginas.
- * ────────────────────────────────────────────────────────────────── */
-
 interface QuestionNavigationProps {
   isFirst: boolean;
   isLast: boolean;
-  /** Tem alternativa selecionada nesta questao. */
   hasAnswer: boolean;
-  /** Feedback ja foi revelado (quiz ja respondido). */
   revealed: boolean;
-  /** Mostrar botao "Responder" (modo immediate com submit explicito). */
   showSubmit?: boolean;
-  /** Mostrar botao "Enviar Avaliacao" no lugar de Proxima na ultima questao. */
   showSubmitAll?: boolean;
-  /** Habilita o botao "Enviar Avaliacao" (todas respondidas). */
   canSubmitAll?: boolean;
 
   onPrev: () => void;

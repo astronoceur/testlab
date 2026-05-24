@@ -10,7 +10,6 @@ const SituationProblemPage: React.FC = () => {
   const sp = unit.situationProblem;
 
   if (!sp) {
-    // unidade sem situacao-problema — pula para o proximo
     const next = nextPage('situation-problem', unit) ?? 'prior-knowledge';
     navigateTo(next);
     return null;
@@ -42,7 +41,6 @@ const SituationProblemPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Narrativa */}
         <div className="tl-card" style={{ borderColor: 'var(--tl-title)', borderWidth: 2 }}>
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
             <span style={{ fontSize: '1.8rem', flexShrink: 0 }}>📖</span>
@@ -56,7 +54,6 @@ const SituationProblemPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Diálogos */}
         {sp.dialogues && sp.dialogues.length > 0 && (
           <div className="tl-card" style={{ background: '#fff8e7', borderColor: '#c0a000' }}>
             <p style={{ margin: '0 0 0.6rem', fontWeight: 800, color: '#7a6000', fontSize: '0.9rem' }}>
@@ -85,7 +82,6 @@ const SituationProblemPage: React.FC = () => {
           </div>
         )}
 
-        {/* Reflexão */}
         <div className="tl-card" style={{ background: '#e4f4ff', borderColor: '#5588cc' }}>
           <p style={{ margin: '0 0 0.5rem', fontWeight: 800, color: '#224488', fontSize: '0.95rem' }}>
             🤔 Reflita antes de continuar
@@ -100,7 +96,6 @@ const SituationProblemPage: React.FC = () => {
           </ul>
         </div>
 
-        {/* Conclusão */}
         <div className="tl-card">
           <div style={{ display: 'flex', gap: '0.6rem' }}>
             <span style={{ fontSize: '1.3rem' }}>🎯</span>

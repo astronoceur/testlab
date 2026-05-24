@@ -1,21 +1,5 @@
 import { Unit } from '../types';
 
-/* ──────────────────────────────────────────────────────────────────
- * UNIDADE 2 — Tipos de Teste de Software
- *
- * Conteudo fiel ao documento
- * "TestLab_Unidade2_Tipos_de_Teste_de_Software.docx.pdf".
- * Estrutura segue o mesmo molde da Unidade 1 (unit1Data.ts) para
- * facilitar manutencao e adicao de novas unidades.
- *
- * Observacao: a plataforma possui dois slots de atividades curtas
- * por unidade — atividade11 (objetivas com modal) e atividade12
- * (discursiva). Como a Unidade 2 tem duas atividades objetivas
- * (2.1 Classificacao + 2.2 Quiz), ambas foram concatenadas em
- * atividade11 para reaproveitar a UI existente. A description
- * deixa claro que o quiz cobre os dois exercicios.
- * ────────────────────────────────────────────────────────────────── */
-
 export const unit2: Unit = {
   id: 2,
   title: 'Unidade 2',
@@ -37,7 +21,6 @@ export const unit2: Unit = {
     'Justificar por que a aplicação de testes em múltiplos níveis é mais eficaz do que testar apenas em uma etapa final.',
   ],
 
-  /* ─── 3. Situacao-problema inicial ─────────────────────────── */
   situationProblem: {
     title: 'A Atualização que Derrubou o Sistema de Agendamento',
     paragraphs: [
@@ -54,7 +37,6 @@ export const unit2: Unit = {
       'Este cenário ilustra um princípio central do teste de software: diferentes tipos de problema exigem diferentes tipos de teste. Um único nível de verificação raramente é suficiente para garantir a qualidade de um sistema real. Ao longo desta unidade, você aprenderá a identificar e aplicar cada nível de teste de forma estratégica.',
   },
 
-  /* ─── 4. Ativacao de conhecimentos previos ─────────────────── */
   priorKnowledgeQuestions: [
     {
       id: 'PK2-1',
@@ -106,7 +88,6 @@ export const unit2: Unit = {
     },
   ],
 
-  /* ─── 5. Conteudo teorico (7 blocos) ───────────────────────── */
   theoryBlocks: [
     {
       id: 'bloco-1',
@@ -353,7 +334,6 @@ export const unit2: Unit = {
     },
   ],
 
-  /* ─── 6. Demonstracao com exemplo resolvido ───────────────── */
   demonstration: {
     requirement: 'Funcionalidade "Adicionar produto ao carrinho" de uma loja virtual.',
     situation:
@@ -396,12 +376,10 @@ export const unit2: Unit = {
       'A mesma funcionalidade — adicionar produto ao carrinho — revela problemas completamente distintos em cada nível de teste. Nenhum nível sozinho seria capaz de detectar todos os problemas. Essa é a justificativa fundamental para a abordagem em múltiplos níveis.',
   },
 
-  /* ─── 7+8. Atividades 2.1 + 2.2 combinadas em atividade11 ─── */
   atividade11: {
     description:
       'Esta atividade combina os exercícios 2.1 (Classificação de Testes — 10 situações) e 2.2 (Quiz Avaliativo sobre Tipos de Teste — 8 questões). Você responde uma questão por vez em janelas separadas e recebe feedback imediato após cada escolha.',
     questions: [
-      /* ─── Atividade 2.1 — Classificacao de Testes (10) ─── */
       {
         id: '2.1.1',
         question:
@@ -523,7 +501,6 @@ export const unit2: Unit = {
         reviewBlock: 'bloco-4',
       },
 
-      /* ─── Atividade 2.2 — Quiz Avaliativo (8) ─── */
       {
         id: '2.2.1',
         question: 'Qual é o principal objetivo do teste unitário?',
@@ -653,7 +630,6 @@ export const unit2: Unit = {
     ],
   },
 
-  /* ─── 9. Pratica guiada — App de Gestao Financeira Pessoal ── */
   guidedPracticeRich: {
     scenario:
       'Uma startup está desenvolvendo um aplicativo de gestão financeira pessoal que permite: cadastrar contas bancárias; registrar receitas e despesas manualmente; sincronizar transações via integração com a API de um banco parceiro; gerar relatórios mensais de gastos por categoria; e receber alertas por push notification quando o saldo atinge um limite mínimo. A equipe completou a codificação dos cinco módulos principais.',
@@ -708,7 +684,6 @@ export const unit2: Unit = {
       'Você aplicou corretamente a lógica de progressão dos níveis de teste, do mais granular (funções isoladas) ao mais abrangente (validação com usuários reais). Cada nível tem um objeto de teste e um objetivo distintos, o que justifica a aplicação de todos eles nesse cenário.',
   },
 
-  /* ─── 10. Pratica independente — Portal de Servicos ao Cidadao ─ */
   independentPracticeRich: {
     scenario:
       'Uma prefeitura está desenvolvendo um portal de serviços ao cidadão. O portal oferece: emissão de segunda via de IPTU (cálculo de multas, correção monetária e geração de boleto); agendamento de serviços presenciais (postos de saúde, cartório, DETRAN); consulta e acompanhamento de processos administrativos; e envio de denúncias anônimas com número de protocolo automático. O sistema será usado por cidadãos, servidores municipais e gestores. A implantação está prevista para daqui a 30 dias.',
@@ -786,7 +761,6 @@ export const unit2: Unit = {
       'Se você confundiu os níveis, retorne ao Bloco 6 (Comparação entre os Tipos de Teste) e revise a tabela comparativa. Cada nível tem um objeto de teste específico: função (unitário), interface entre módulos (integração), sistema completo (sistema), uso real pelo usuário (aceitação).',
   },
 
-  /* ─── 11. Avaliacao final — 10 questoes (AF2-01 a AF2-10) ── */
   finalAssessmentQuestions: [
     {
       id: 'AF2-01',
@@ -965,7 +939,6 @@ export const unit2: Unit = {
     'AF2-10': ['bloco-2', 'bloco-3', 'bloco-4', 'bloco-5'],
   },
 
-  /* ─── 12. Desafio Aplicado Final ───────────────────────────── */
   finalChallenge: {
     enunciado:
       'Leia o cenário a seguir e responda às quatro questões propostas. Para cada problema relatado em produção, identifique qual tipo de teste deveria tê-lo detectado, em que momento esse teste deveria ter sido aplicado, qual seu objetivo e como ele evitaria a falha. Esta atividade avalia sua capacidade de aplicar os níveis de teste a um cenário real e integrador.',
@@ -1049,7 +1022,6 @@ export const unit2: Unit = {
       'Ao concluir este desafio, você aplicou os quatro níveis de teste a um cenário real de sistema em produção. A capacidade de identificar qual nível de teste deveria ter detectado cada tipo de problema é uma competência essencial para profissionais de qualidade de software. Você concluiu a Unidade 2 e está preparado para avançar ao estudo das técnicas de projeto de casos de teste.',
   },
 
-  /* ─── Estrutura legada (mantida para compatibilidade) ──────── */
   content: [],
   examples: [],
   guidedPractice: {

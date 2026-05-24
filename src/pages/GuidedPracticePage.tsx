@@ -5,12 +5,6 @@ import FeedbackMessage from '../components/FeedbackMessage';
 import { units } from '../data/units';
 import { nextPage, previousPage } from '../data/unitFlow';
 
-/* ──────────────────────────────────────────────────────────────────
- * Quando a unidade tem `guidedPracticeRich` (Unidade 1 e seguintes),
- * exibe o formato com campos texto + dicas progressivas. Caso
- * contrario, fallback para o formato legado de selecao multipla.
- * ────────────────────────────────────────────────────────────────── */
-
 const GuidedPracticePage: React.FC = () => {
   const {
     navigateTo, currentUnit,
@@ -30,7 +24,6 @@ const GuidedPracticePage: React.FC = () => {
     navigateTo(next);
   };
 
-  /* ─── Modo rico (Unidade 1) ─────────────────────────────────── */
   if (unit.guidedPracticeRich) {
     const gp = unit.guidedPracticeRich;
     const allFilled = gp.fields.every((f) => (guidedPracticeFields[f.key] ?? '').trim().length > 0);
@@ -59,7 +52,6 @@ const GuidedPracticePage: React.FC = () => {
             </p>
           </div>
 
-          {/* Cenário */}
           <div className="tl-card" style={{ borderColor: 'var(--tl-title)' }}>
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <span style={{ fontSize: '1.5rem' }}>🛒</span>
@@ -77,7 +69,6 @@ const GuidedPracticePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Campos */}
           <div className="tl-card">
             <p style={{ margin: '0 0 1rem', fontWeight: 800, color: '#1a4a10' }}>
               Preencha os três campos:
@@ -107,7 +98,6 @@ const GuidedPracticePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Dicas progressivas */}
           {visibleHints.length > 0 && !guidedPracticeSubmitted && (
             <div
               className="tl-card"
@@ -137,7 +127,6 @@ const GuidedPracticePage: React.FC = () => {
             </div>
           )}
 
-          {/* Resposta esperada + feedback */}
           {guidedPracticeSubmitted && (
             <>
               <div className="tl-card" style={{ background: '#d4f0c0', borderColor: '#2d8f2d', borderWidth: 3 }}>
@@ -178,7 +167,6 @@ const GuidedPracticePage: React.FC = () => {
             </>
           )}
 
-          {/* Botões */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
               <button className="tl-btn-ghost" onClick={handleBack}>← Voltar</button>

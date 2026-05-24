@@ -12,7 +12,7 @@ const WelcomePage: React.FC = () => {
   return (
     <Layout showProgress>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-        {/* Hero */}
+
         <div className="tl-card" style={{ textAlign: 'center', padding: '2rem 1.5rem' }}>
           <div style={{ fontSize: '4rem', marginBottom: '0.5rem' }}>{unit.icon}</div>
           <p
@@ -29,7 +29,6 @@ const WelcomePage: React.FC = () => {
           </p>
         </div>
 
-        {/* Bloco de metadados (carga horaria, nivel, referencia, abordagem) */}
         {meta && (
           <div
             style={{
@@ -74,7 +73,6 @@ const WelcomePage: React.FC = () => {
           </div>
         )}
 
-        {/* Trilha visual */}
         <div className="tl-card">
           <p style={{ margin: '0 0 0.6rem', fontWeight: 800, color: '#1a4a10' }}>
             Etapas da unidade
@@ -113,7 +111,6 @@ const WelcomePage: React.FC = () => {
           </div>
         </div>
 
-        {/* O que vai aprender */}
         <div className="tl-card">
           <h3 style={{ margin: '0 0 0.75rem', color: 'var(--tl-title)', fontWeight: 800 }}>
             📋 O que você vai aprender

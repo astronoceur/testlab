@@ -3,19 +3,6 @@ import { useApp } from '../context/AppContext';
 import { units } from '../data/units';
 import { Page } from '../types';
 
-/* ──────────────────────────────────────────────────────────────────
- * ContinueCard
- * ─────────────
- * Card "Continuar de onde parei" exibido no Dashboard quando o
- * usuario ja iniciou alguma unidade. Mostra:
- *   - Nome da unidade atual
- *   - Ultima atividade acessada (rotulo amigavel)
- *   - Percentual de progresso
- *   - Botao "Continuar"
- *
- * Se nao houver progresso, o componente nao renderiza nada.
- * ────────────────────────────────────────────────────────────────── */
-
 const PAGE_LABELS: Partial<Record<Page, string>> = {
   welcome: 'Boas-vindas',
   objectives: 'Objetivos',
@@ -90,7 +77,6 @@ const ContinueCard: React.FC = () => {
         </p>
       </div>
 
-      {/* Barra de progresso */}
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
           <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#EAF7EF' }}>

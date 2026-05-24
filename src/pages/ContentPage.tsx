@@ -5,15 +5,6 @@ import { units } from '../data/units';
 import { TheoryBlock } from '../types';
 import { nextPage, previousPage } from '../data/unitFlow';
 
-/* ──────────────────────────────────────────────────────────────────
- * Helpers visuais: realce de glossario, deteccao de checklist e
- * de comparacao produto/processo, e inferencia de subtitulo do
- * subcard a partir de pistas no texto.
- * ────────────────────────────────────────────────────────────────── */
-
-/* Termos do glossario que ganham destaque automatico (negrito + cor)
- * quando aparecem no texto. Ordenados do mais longo para o mais curto
- * para evitar capturas parciais. */
 const GLOSSARY: string[] = [
   'qualidade do produto', 'qualidade do processo',
   'qualidade de produto', 'qualidade de processo',
@@ -238,7 +229,7 @@ const TheoryBlockView: React.FC<{ block: TheoryBlock }> = ({ block }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
-      {/* ─── Cabeçalho do bloco ─── */}
+
       <div
         className="tl-card"
         style={{
@@ -286,7 +277,6 @@ const TheoryBlockView: React.FC<{ block: TheoryBlock }> = ({ block }) => {
         </div>
       </div>
 
-      {/* ─── Explicação: 1 subcard por ideia ─── */}
       {block.explanation.map((p, i) => {
         const label = inferLabel(p, i);
         const comparison = detectProductProcessComparison(p);
@@ -430,7 +420,6 @@ const TheoryBlockView: React.FC<{ block: TheoryBlock }> = ({ block }) => {
         );
       })}
 
-      {/* ─── Exemplo ─── */}
       <div className="tl-card-white" style={{ borderLeft: '5px solid #5588cc', padding: '0.875rem 1rem' }}>
         <p style={{ margin: '0 0 8px', fontWeight: 800, color: '#224488', fontSize: '0.85rem' }}>
           🧪 {block.example.title}
@@ -472,7 +461,6 @@ const TheoryBlockView: React.FC<{ block: TheoryBlock }> = ({ block }) => {
         )}
       </div>
 
-      {/* ─── Observação / Atenção ─── */}
       <div
         className="tl-card"
         style={{ background: '#fffde0', borderColor: '#c0a000', padding: '0.875rem 1rem' }}
@@ -485,7 +473,6 @@ const TheoryBlockView: React.FC<{ block: TheoryBlock }> = ({ block }) => {
         </p>
       </div>
 
-      {/* ─── Miniatividade ─── */}
       <div className="tl-card" style={{ borderLeft: '5px solid #2d8f2d', padding: '0.875rem 1rem' }}>
         <p style={{ margin: '0 0 4px', fontWeight: 800, color: '#0a4f0a', fontSize: '0.85rem' }}>
           ✏️ Miniatividade de fixação
@@ -578,7 +565,6 @@ const ContentPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Tabs de navegacao entre blocos */}
         <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
           {(useRich ? blocks! : unit.content).map((s, i) => (
             <button
@@ -602,7 +588,6 @@ const ContentPage: React.FC = () => {
           ))}
         </div>
 
-        {/* Conteudo do bloco */}
         {useRich ? (
           <TheoryBlockView block={blocks![active]} />
         ) : (

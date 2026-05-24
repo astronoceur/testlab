@@ -16,8 +16,6 @@ import {
   updateUnitProgress,
 } from '../data/progressStore';
 
-/* Paginas que pertencem ao fluxo da unidade. Usadas para registrar
- * automaticamente lastPage/visitedPages no progresso do usuario. */
 const UNIT_PAGES: Page[] = [
   'welcome',
   'objectives',
@@ -36,8 +34,6 @@ const UNIT_PAGES: Page[] = [
   'unit-contents',
 ];
 
-/* Traduz mensagens comuns de erro do Supabase Auth (ingles) para
- * portugues. Se nao reconhecer, devolve a mensagem original. */
 function translateAuthError(message: string): string {
   const m = message.toLowerCase();
   if (m.includes('invalid login credentials')) return 'E-mail ou senha inválidos.';
@@ -61,7 +57,6 @@ interface AuthResult {
 }
 
 interface RegisterResult extends AuthResult {
-  /** True quando o Supabase exige confirmacao de e-mail antes do login. */
   needsConfirmation?: boolean;
 }
 
@@ -69,7 +64,6 @@ interface AppContextType {
   page: Page;
   navigateTo: (page: Page) => void;
   user: User | null;
-  /** True enquanto a sessao inicial / login esta sendo carregada. */
   authLoading: boolean;
   register: (name: string, email: string, password: string) => Promise<RegisterResult>;
   login: (email: string, password: string) => Promise<AuthResult>;
@@ -78,7 +72,6 @@ interface AppContextType {
   currentUnit: number;
   setCurrentUnit: (id: number) => void;
 
-  /* Estado das atividades da unidade corrente */
   situationProblemRead: boolean;
   setSituationProblemRead: (v: boolean) => void;
 
@@ -146,7 +139,6 @@ interface AppContextType {
   getUnitProgress: (unitId: number) => UnitProgress | undefined;
   resumeProgress: () => void;
 
-  /* Backward-compat usado por paginas existentes */
   unitScores: Record<number, number>;
   unitCompleted: Record<number, boolean>;
 
@@ -196,7 +188,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [userProgress, setUserProgress] = useState<UserProgress>(() => emptyUserProgress(''));
 
-  /* Scoreboard derivado para paginas legadas (unitScores / unitCompleted). */
   const unitScores: Record<number, number> = {};
   const unitCompleted: Record<number, boolean> = {};
   Object.values(userProgress.units).forEach((u) => {
@@ -204,11 +195,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (u.completed) unitCompleted[u.unitId] = true;
   });
 
-  /* Ref para evitar dependencia circular nos efeitos. */
   const progressRef = useRef(userProgress);
   progressRef.current = userProgress;
-
-  /* ─── Inicializacao da sessao + listener de auth ──────────── */
 
   useEffect(() => {
     let mounted = true;
@@ -253,8 +241,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     });
 
-    /* Garante que o ultimo save (em debounce) seja efetivado quando
-     * o usuario fecha a aba ou recarrega a pagina. */
     const onBeforeUnload = () => flushPendingSave();
     window.addEventListener('beforeunload', onBeforeUnload);
 
@@ -266,9 +252,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* ─── API de progresso ─────────────────────────────────────── */
-
-  /** Atualiza progresso (state) e agenda persistencia no Supabase. */
   const persist = (next: UserProgress) => {
     setUserProgress(next);
     if (next.userId) saveUserProgress(next);
@@ -317,8 +300,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  /* ─── Auth (Supabase) ──────────────────────────────────────── */
-
   const register = async (
     name: string,
     email: string,
@@ -330,8 +311,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       options: { data: { name: name.trim() } },
     });
     if (error) return { ok: false, error: translateAuthError(error.message) };
-    /* Se nao houver sessao, o Supabase espera confirmacao de e-mail.
-     * O onAuthStateChange so vai disparar apos o usuario confirmar. */
     const needsConfirmation = !data.session;
     return { ok: true, needsConfirmation };
   };
@@ -342,17 +321,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       password,
     });
     if (error) return { ok: false, error: translateAuthError(error.message) };
-    /* onAuthStateChange dispara SIGNED_IN e applySession cuida do resto. */
     return { ok: true };
   };
 
   const logout = async (): Promise<void> => {
     flushPendingSave();
     await supabase.auth.signOut();
-    /* onAuthStateChange dispara SIGNED_OUT e reseta o estado. */
   };
-
-  /* ─── API de progresso ─────────────────────────────────────── */
 
   const markPageVisited = (p: Page) => {
     if (!UNIT_PAGES.includes(p)) return;

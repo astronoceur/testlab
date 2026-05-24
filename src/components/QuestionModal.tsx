@@ -1,26 +1,11 @@
 import React, { useEffect } from 'react';
 
-/* ──────────────────────────────────────────────────────────────────
- * QuestionModal
- * ──────────────
- * Wrapper generico de modal usado pelas atividades. Renderiza um
- * dialogo centralizado com backdrop. Aceita header (titulo + botao
- * fechar), corpo livre e footer customizado (geralmente o
- * QuestionNavigation).
- *
- * Acessibilidade:
- *  - role="dialog" + aria-modal
- *  - fecha com tecla Escape
- *  - clique no backdrop fecha (pode ser desativado)
- * ────────────────────────────────────────────────────────────────── */
-
 interface QuestionModalProps {
   open: boolean;
   onClose: () => void;
   title?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
-  /** Permite fechar clicando fora. Default: true. */
   closeOnBackdrop?: boolean;
 }
 
@@ -32,7 +17,6 @@ const QuestionModal: React.FC<QuestionModalProps> = ({
   footer,
   closeOnBackdrop = true,
 }) => {
-  /* Fecha com Escape. */
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
@@ -42,7 +26,6 @@ const QuestionModal: React.FC<QuestionModalProps> = ({
     return () => window.removeEventListener('keydown', handler);
   }, [open, onClose]);
 
-  /* Bloqueia o scroll do body enquanto o modal esta aberto. */
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;

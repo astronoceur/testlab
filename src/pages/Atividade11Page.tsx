@@ -69,8 +69,6 @@ const Atividade11Page: React.FC = () => {
     navigateTo(prev);
   };
 
-  /* Indice inicial do modal: primeira nao respondida (se ainda
-   * estiver no processo) ou 0 (em modo revisao). */
   const initialIndex = (() => {
     if (atividade11Submitted) return 0;
     const idx = selected.findIndex((s) => s === null);
@@ -101,7 +99,6 @@ const Atividade11Page: React.FC = () => {
           </p>
         </div>
 
-        {/* Card de progresso e botao do modal */}
         <div className="tl-card" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
             <div>
@@ -131,7 +128,6 @@ const Atividade11Page: React.FC = () => {
           </div>
         </div>
 
-        {/* Resumo + acoes */}
         {(allAnswered || atividade11Submitted) && (
           <div
             className="tl-card"

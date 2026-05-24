@@ -6,8 +6,6 @@ import { units } from '../data/units';
 const RUBRIC_PALETTE = ['#fdd', '#fff8e7', '#e4f4ff', '#d4f0c0'];
 const RUBRIC_BORDER = ['#8b0000', '#c0a000', '#5588cc', '#2d8f2d'];
 
-/* Avaliacao simples por palavras-chave para cada campo do desafio
- * rico (Unidade 1). Para o formato legado mantemos o scoring antigo. */
 function scoreRichChallenge(
   answers: Record<string, string>,
   expected: Record<string, string>
@@ -19,7 +17,6 @@ function scoreRichChallenge(
       itemOk[key] = false;
       continue;
     }
-    // procura ao menos 2 termos significativos do gabarito (>=4 letras)
     const expectedTerms = expected[key]
       .toLowerCase()
       .replace(/[^a-záéíóúâêôãõàç0-9 ]/g, ' ')
@@ -33,7 +30,6 @@ function scoreRichChallenge(
   return { count, total: Object.keys(expected).length, itemOk };
 }
 
-/* Score legado (Unidades 2..5) — mantido por compatibilidade. */
 interface LegacyScoreItem {
   label: string;
   ok: boolean;
@@ -125,7 +121,6 @@ const ChallengePage: React.FC = () => {
             </p>
           </div>
 
-          {/* Cenário */}
           <div className="tl-card" style={{ background: '#fdd', borderColor: '#8b0000', borderWidth: 3 }}>
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>🛡️</span>
@@ -138,7 +133,6 @@ const ChallengePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Campos de resposta */}
           <div className="tl-card">
             <p style={{ margin: '0 0 1rem', fontWeight: 800, color: 'var(--tl-title)', fontSize: '1rem' }}>
               Sua análise
@@ -168,7 +162,6 @@ const ChallengePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Resultado pós-submissão */}
           {challengeSubmitted && result && level && (
             <>
               <div
@@ -206,7 +199,6 @@ const ChallengePage: React.FC = () => {
                 </p>
               </div>
 
-              {/* Avaliação detalhada por campo */}
               <div className="tl-card">
                 <p style={{ margin: '0 0 0.6rem', fontWeight: 800, color: '#1a4a10' }}>
                   Avaliação detalhada
@@ -247,7 +239,6 @@ const ChallengePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Resposta esperada */}
               <div className="tl-card" style={{ background: '#e4f8cc', borderColor: '#2d8f2d' }}>
                 <p style={{ margin: '0 0 0.6rem', fontWeight: 800, color: '#0a4f0a' }}>
                   ✅ Resposta esperada (gabarito)
@@ -283,7 +274,6 @@ const ChallengePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Rubrica completa */}
               <div className="tl-card">
                 <p style={{ margin: '0 0 0.6rem', fontWeight: 800, color: '#1a4a10' }}>
                   Rubrica de avaliação
@@ -317,7 +307,6 @@ const ChallengePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Feedback final */}
               <div className="tl-card" style={{ background: '#d4f0c0', borderColor: '#2d8f2d', borderWidth: 3 }}>
                 <p style={{ margin: '0 0 0.4rem', fontWeight: 800, color: '#0a4f0a' }}>
                   🌟 Feedback final

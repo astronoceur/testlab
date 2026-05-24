@@ -1,15 +1,5 @@
 import { Page, Unit } from '../types';
 
-/* ──────────────────────────────────────────────────────────────────
- * Fluxo navegacional dentro de uma unidade.
- *
- * A funcao `nextPage` retorna o proximo passo do fluxo, pulando
- * automaticamente as paginas para as quais a unidade atual nao tem
- * conteudo (ex: unidades 2..5 nao tem situationProblem nem
- * atividade11/atividade12 — basta omitir o campo correspondente
- * em data/units.ts).
- * ─────────────────────────────────────────────────────────────── */
-
 const FULL_FLOW: Page[] = [
   'welcome',
   'objectives',
@@ -31,7 +21,6 @@ function pageAvailable(page: Page, unit: Unit): boolean {
     case 'situation-problem':
       return !!unit.situationProblem;
     case 'content':
-      // Bloco teorico rico OU conteudo legado
       return (unit.theoryBlocks && unit.theoryBlocks.length > 0) ||
              (unit.content && unit.content.length > 0);
     case 'demonstration':
@@ -47,7 +36,7 @@ function pageAvailable(page: Page, unit: Unit): boolean {
     case 'challenge':
       return !!unit.finalChallenge || !!unit.challenge?.scenario;
     case 'examples':
-      return false; // sempre redireciona para demonstration
+      return false;
     default:
       return true;
   }

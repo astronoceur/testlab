@@ -1,18 +1,8 @@
 import React from 'react';
 
-/* ──────────────────────────────────────────────────────────────────
- * FeedbackBox
- * ────────────
- * Caixa de feedback verde/vermelha exibida apos resposta. Reutiliza
- * as classes utilitarias .tl-feedback-ok / .tl-feedback-err do tema
- * Test Lab. Variante mais flexivel do FeedbackMessage existente,
- * com titulo customizavel e usado dentro dos modais de questao.
- * ────────────────────────────────────────────────────────────────── */
-
 interface FeedbackBoxProps {
   correct: boolean;
   explanation: string;
-  /** Titulo customizado (default: "Correto!" / "Não foi dessa vez."). */
   title?: string;
 }
 

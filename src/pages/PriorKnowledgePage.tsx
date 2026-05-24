@@ -17,8 +17,6 @@ const PriorKnowledgePage: React.FC = () => {
   const unit = units.find((u) => u.id === currentUnit)!;
   const questions = unit.priorKnowledgeQuestions;
 
-  /* Respostas locais — espelham o que o context guarda para
-   * preservar entre navegacoes. */
   const [selected, setSelected] = useState<(number | null)[]>(
     priorKnowledgeAnswers.length === questions.length
       ? priorKnowledgeAnswers
@@ -41,8 +39,6 @@ const PriorKnowledgePage: React.FC = () => {
     const next = [...selected];
     next[qIdx] = oIdx;
     setSelected(next);
-    /* Persiste imediatamente no context — assim, mesmo se o usuario
-     * fechar o modal antes de terminar, as respostas sao mantidas. */
     setPriorKnowledgeAnswers(next);
   };
 
@@ -61,7 +57,6 @@ const PriorKnowledgePage: React.FC = () => {
     navigateTo(prev);
   };
 
-  /* Indice inicial: primeira questao ainda nao respondida (ou 0). */
   const initialIndex = (() => {
     const idx = selected.findIndex((s) => s === null);
     return idx === -1 ? 0 : idx;
@@ -84,7 +79,6 @@ const PriorKnowledgePage: React.FC = () => {
           </p>
         </div>
 
-        {/* Card resumo + botao para abrir o modal */}
         <div className="tl-card" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
             <div>
@@ -111,7 +105,6 @@ const PriorKnowledgePage: React.FC = () => {
           </div>
         </div>
 
-        {/* Resumo apos concluir todas */}
         {allAnswered && (
           <div
             className="tl-card"

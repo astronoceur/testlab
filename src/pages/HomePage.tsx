@@ -6,7 +6,6 @@ import { Page } from '../types';
 import ladybugs from '../assets/ladybug.png';
 import bug from '../assets/bug.webp';
 
-/* Rotulos amigaveis para a "ultima etapa" da unidade em andamento. */
 const PAGE_LABELS: Partial<Record<Page, string>> = {
   welcome: 'Boas-vindas',
   objectives: 'Objetivos',
@@ -38,7 +37,6 @@ const HomePage: React.FC = () => {
     resetUnitProgress,
   } = useApp();
 
-  /* Estatisticas: unidades concluidas e media das notas registradas. */
   let completedUnits = 0;
   const scores: number[] = [];
   units.forEach((u) => {
@@ -49,7 +47,6 @@ const HomePage: React.FC = () => {
   const avgScore =
     scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null;
 
-  /* Unidade ativa para destacar no card "Continuar de onde parei". */
   const currentUnitId = userProgress.currentUnitId;
 
   const handleContinue = (unitId: number) => {
@@ -79,7 +76,7 @@ const HomePage: React.FC = () => {
   return (
     <Layout wide>
       <div className="tl-home-grid">
-        {/* ─── Coluna esquerda: boas-vindas + estatisticas ─── */}
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div
             className="tl-card"
@@ -138,7 +135,6 @@ const HomePage: React.FC = () => {
           </div>
         </div>
 
-        {/* ─── Coluna direita: lista de unidades ─── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
           {units.map((unit) => {
             const status = getUnitStatus(unit.id);

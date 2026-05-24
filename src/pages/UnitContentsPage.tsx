@@ -4,27 +4,6 @@ import Layout from '../components/Layout';
 import { units } from '../data/units';
 import { Page } from '../types';
 
-/* ──────────────────────────────────────────────────────────────────
- * UnitContentsPage
- * ─────────────────
- * Hub central da unidade. Mostra todas as secoes da unidade em
- * formato indice e permite acesso rapido a:
- *   - Introducao (welcome / objectives)
- *   - Conteudo teorico (content)
- *   - Exemplos / demonstracao
- *   - Atividades praticas
- *   - Desafio final
- *   - Revisao / resumo
- *
- * O acesso e livre — nao reseta progresso, permite revisao a
- * qualquer momento. Itens nao disponiveis na unidade (ex: unidades
- * 2..5 sem situationProblem) sao automaticamente ocultados.
- *
- * Para adicionar conteudos textuais novos, basta editar
- * src/data/units.ts ou src/data/unit{N}Data.ts. A pagina renderiza
- * dinamicamente o que existir.
- * ────────────────────────────────────────────────────────────────── */
-
 interface SectionLink {
   icon: string;
   title: string;
@@ -167,7 +146,7 @@ const UnitContentsPage: React.FC = () => {
   return (
     <Layout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-        {/* Cabecalho */}
+
         <div className="tl-card" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <div style={{ fontSize: '3rem' }}>{unit.icon}</div>
           <div style={{ flex: 1 }}>
@@ -186,7 +165,6 @@ const UnitContentsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Metadados (quando disponiveis) */}
         {meta && (
           <div
             style={{
@@ -226,7 +204,6 @@ const UnitContentsPage: React.FC = () => {
           </div>
         )}
 
-        {/* Aviso de revisao livre */}
         <div
           className="tl-card-white"
           style={{ borderLeft: '5px solid var(--tl-success)', padding: '0.75rem 1rem' }}
@@ -237,7 +214,6 @@ const UnitContentsPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Lista de secoes */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
           {visibleSections.map((s) => (
             <button

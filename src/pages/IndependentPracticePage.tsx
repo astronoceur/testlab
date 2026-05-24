@@ -27,7 +27,6 @@ const IndependentPracticePage: React.FC = () => {
     setIndependentPracticeAnswer({ ...independentPracticeAnswer, [key]: value });
   };
 
-  /* ─── Modo rico (Unidade 1) ─────────────────────────────────── */
   if (unit.independentPracticeRich) {
     const ip = unit.independentPracticeRich;
     const allFilled = ip.fields.every(
@@ -49,7 +48,6 @@ const IndependentPracticePage: React.FC = () => {
             </p>
           </div>
 
-          {/* Cenário */}
           <div className="tl-card" style={{ background: '#fffde0', borderColor: '#c0a000' }}>
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <span style={{ fontSize: '1.5rem' }}>📚</span>
@@ -62,7 +60,6 @@ const IndependentPracticePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Tarefas */}
           <div className="tl-card">
             <p style={{ margin: '0 0 0.5rem', fontWeight: 800, color: '#1a4a10' }}>Tarefa</p>
             <ol
@@ -87,7 +84,6 @@ const IndependentPracticePage: React.FC = () => {
             </ol>
           </div>
 
-          {/* Critérios de correção */}
           <div className="tl-card" style={{ background: '#e4f4ff', borderColor: '#5588cc' }}>
             <p style={{ margin: '0 0 0.5rem', fontWeight: 800, color: '#224488' }}>
               Critérios de correção
@@ -134,7 +130,6 @@ const IndependentPracticePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Campos */}
           <div className="tl-card">
             <p style={{ margin: '0 0 0.75rem', fontWeight: 800, color: '#1a4a10' }}>
               Sua resposta
@@ -159,7 +154,6 @@ const IndependentPracticePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Pós-submissão: resposta esperada + feedback */}
           {independentPracticeSubmitted && (
             <>
               <div className="tl-card" style={{ background: '#d4f0c0', borderColor: '#2d8f2d', borderWidth: 3 }}>

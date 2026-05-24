@@ -53,7 +53,6 @@ const Atividade12Page: React.FC = () => {
           </p>
         </div>
 
-        {/* Enunciado */}
         <div className="tl-card" style={{ background: '#e4f4ff', borderColor: '#5588cc' }}>
           <div style={{ display: 'flex', gap: '0.75rem' }}>
             <span style={{ fontSize: '1.5rem' }}>📝</span>
@@ -68,7 +67,6 @@ const Atividade12Page: React.FC = () => {
           </div>
         </div>
 
-        {/* Critérios visíveis desde o início */}
         <div className="tl-card">
           <p style={{ margin: '0 0 0.5rem', fontWeight: 800, color: '#1a4a10' }}>
             Critérios de resposta esperada
@@ -83,7 +81,6 @@ const Atividade12Page: React.FC = () => {
           </ul>
         </div>
 
-        {/* Editor */}
         <div className="tl-card">
           <label className="tl-label">Sua resposta</label>
           <textarea
@@ -113,7 +110,6 @@ const Atividade12Page: React.FC = () => {
           </div>
         </div>
 
-        {/* Pós-submissão: exemplo + rubrica */}
         {atividade12Submitted && (
           <>
             <div className="tl-card" style={{ background: '#d4f0c0', borderColor: '#2d8f2d' }}>

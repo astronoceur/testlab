@@ -5,49 +5,18 @@ import QuestionProgress from './QuestionProgress';
 import QuestionNavigation from './QuestionNavigation';
 import FeedbackBox from './FeedbackBox';
 
-/* ──────────────────────────────────────────────────────────────────
- * ActivityQuizModal
- * ──────────────────
- * Orquestrador que renderiza UMA questao por vez dentro de um
- * modal. Reutilizado pelas atividades objetivas:
- *
- *   - PriorKnowledgePage   (mode: 'immediate')
- *   - Atividade11Page      (mode: 'immediate')
- *   - FinalAssessmentPage  (mode: 'deferred')
- *
- * No modo 'immediate' o feedback aparece automaticamente apos o
- * usuario clicar numa alternativa (mantendo o comportamento
- * existente da plataforma).
- *
- * No modo 'deferred' o feedback so aparece apos o submitAll global,
- * e ate la o usuario pode navegar livremente entre as questoes
- * trocando respostas.
- *
- * As respostas sao mantidas pelo componente pai (props.answers).
- * O indice da questao corrente e o array de "revelado" no modo
- * immediate ficam em estado local — o componente reabre na primeira
- * questao quando `open` muda de false para true.
- * ────────────────────────────────────────────────────────────────── */
-
 type Mode = 'immediate' | 'deferred';
 
 interface ActivityQuizModalProps {
   open: boolean;
   onClose: () => void;
   questions: QuizQuestion[];
-  /** Respostas atuais (selectedIndex por questao). */
   answers: (number | null)[];
-  /** Notifica selecao de uma alternativa. */
   onSelect: (qIdx: number, oIdx: number) => void;
-  /** Modo de feedback. */
   mode?: Mode;
-  /** [deferred] avaliacao ja foi enviada — mostra feedback. */
   submitted?: boolean;
-  /** [deferred] callback de Enviar Avaliacao no botao do ultimo modal. */
   onSubmitAll?: () => void;
-  /** Texto do header do modal (ex: "Atividade 1.1"). */
   activityLabel?: string;
-  /** Indice inicial ao abrir (0-based). Default: 0. */
   initialIndex?: number;
 }
 
@@ -65,20 +34,13 @@ const ActivityQuizModal: React.FC<ActivityQuizModalProps> = ({
 }) => {
   const [index, setIndex] = useState(initialIndex);
 
-  /* No modo immediate, mantemos um array local de "ja revelado"
-   * para que ao reabrir uma questao previamente respondida o
-   * feedback apareca novamente. */
   const [revealedLocal, setRevealedLocal] = useState<boolean[]>(() =>
     answers.map((a) => a !== null),
   );
 
-  /* Reabre na questao inicial quando abre o modal. */
   useEffect(() => {
     if (open) {
       setIndex(initialIndex);
-      /* Re-sincroniza revealed com o array de respostas — assim
-       * uma sessao reaberta apos navegacao ja mostra o feedback
-       * das questoes ja respondidas. */
       if (mode === 'immediate') {
         setRevealedLocal(answers.map((a) => a !== null));
       }
@@ -100,12 +62,9 @@ const ActivityQuizModal: React.FC<ActivityQuizModalProps> = ({
     mode === 'immediate' ? !!revealedLocal[index] : submitted;
 
   const handleSelect = (oIdx: number) => {
-    /* Apos revelado/submetido, nao permite alterar. */
     if (mode === 'immediate' && isRevealed) return;
     if (mode === 'deferred' && submitted) return;
     onSelect(index, oIdx);
-    /* No modo immediate, clicar na alternativa ja revela o feedback —
-     * preserva o comportamento original da plataforma. */
     if (mode === 'immediate') {
       setRevealedLocal((prev) => {
         const next = [...prev];
@@ -122,9 +81,6 @@ const ActivityQuizModal: React.FC<ActivityQuizModalProps> = ({
     if (!isFirst) setIndex(index - 1);
   };
 
-  /* "Responder" so e exibido se quisermos um botao explicito —
-   * hoje o modo immediate auto-revela ao selecionar, entao mantemos
-   * showSubmit=false. Disponivel para uso futuro. */
   const showSubmit = false;
   const showSubmitAll = mode === 'deferred' && !submitted;
 

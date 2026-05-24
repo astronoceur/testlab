@@ -1,13 +1,4 @@
-/* ------------------------------------------------------------------
- * Tipos centralizados da plataforma Test Lab.
- *
- * As estruturas marcadas como "ricas" (situationProblem, theoryBlocks,
- * demonstration, atividade11, atividade12, guidedPracticeRich,
- * independentPracticeRich, finalChallenge) sao opcionais para que
- * unidades antigas (2 a 5) com formato simplificado continuem
- * funcionando enquanto novas unidades sao migradas para o padrao
- * usado pela Unidade 1.
- * ------------------------------------------------------------------ */
+
 
 export type Page =
   | 'login'
@@ -40,21 +31,16 @@ export interface StoredUser {
   password: string;
 }
 
-/* ─── Questoes objetivas ────────────────────────────────────────── */
 export interface QuizQuestion {
   id: string | number;
   question: string;
   options: string[];
   correctIndex: number;
-  /** Mensagem exibida quando o aluno acerta. */
   explanation: string;
-  /** Mensagem exibida quando o aluno erra (fallback: explanation). */
   errorExplanation?: string;
-  /** Bloco do conteudo associado para sugestao de revisao. */
   reviewBlock?: string;
 }
 
-/* ─── Metadados da unidade ──────────────────────────────────────── */
 export interface UnitMeta {
   cargaHoraria: string;
   nivel: string;
@@ -63,7 +49,6 @@ export interface UnitMeta {
   pillars?: string[];
 }
 
-/* ─── Situacao-problema inicial ─────────────────────────────────── */
 export interface SituationProblem {
   title: string;
   paragraphs: string[];
@@ -72,17 +57,13 @@ export interface SituationProblem {
   conclusion: string;
 }
 
-/* ─── Bloco de conteudo teorico (modelo rico) ───────────────────── */
 export type MiniActivityType = 'truefalse' | 'fill' | 'match' | 'text';
 
 export interface MiniActivity {
   type: MiniActivityType;
   prompt: string;
-  /** Para truefalse: rotulos das opcoes. */
   options?: string[];
-  /** Indice da resposta correta para truefalse. */
   correctIndex?: number;
-  /** Pares chave→descricao para "match". */
   pairs?: { left: string; right: string }[];
   placeholder?: string;
   expectedAnswer: string;
@@ -93,20 +74,17 @@ export interface TheoryBlock {
   number: number;
   title: string;
   icon: string;
-  /** Paragrafos da explicacao conceitual. */
   explanation: string[];
   example: { title: string; body: string };
   observation: { title: string; body: string };
   miniActivity: MiniActivity;
 }
 
-/* ─── Demonstracao com exemplo resolvido ───────────────────────── */
 export interface DemonstrationStep {
   id: number;
   label: string;
   question: string;
   body: string;
-  /** Cor base do passo (ex: "#8b0000"). */
   color: string;
 }
 
@@ -117,7 +95,6 @@ export interface Demonstration {
   lesson: string;
 }
 
-/* ─── Atividade 1.2 (discursiva) ────────────────────────────────── */
 export interface Atividade12 {
   question: string;
   minWords: number;
@@ -126,13 +103,11 @@ export interface Atividade12 {
   rubric: { level: string; range: string; description: string }[];
 }
 
-/* ─── Praticas com multiplos campos texto ──────────────────────── */
 export interface PracticeField {
   key: string;
   label: string;
   description?: string;
   placeholder?: string;
-  /** Cor de destaque para a resposta esperada. */
   color?: string;
 }
 
@@ -155,7 +130,6 @@ export interface IndependentPracticeRich {
   feedbackIncorrect: string;
 }
 
-/* ─── Desafio aplicado final ────────────────────────────────────── */
 export interface FinalChallenge {
   enunciado: string;
   scenario: string;
@@ -170,7 +144,6 @@ export interface FinalChallenge {
   finalFeedback: string;
 }
 
-/* ─── Tipos legados (Unidades 2 a 5) ────────────────────────────── */
 export interface ContentSection {
   title: string;
   body: string;
@@ -229,7 +202,6 @@ export interface Challenge {
   };
 }
 
-/* ─── Unidade ───────────────────────────────────────────────────── */
 export interface Unit {
   id: number;
   title: string;
@@ -239,7 +211,6 @@ export interface Unit {
   meta?: UnitMeta;
   objectives: string[];
 
-  /* Estrutura rica (Unidade 1 completa). */
   situationProblem?: SituationProblem;
   theoryBlocks?: TheoryBlock[];
   demonstration?: Demonstration;
@@ -248,10 +219,8 @@ export interface Unit {
   guidedPracticeRich?: GuidedPracticeRich;
   independentPracticeRich?: IndependentPracticeRich;
   finalChallenge?: FinalChallenge;
-  /** Mapeia o id da questao da avaliacao final para o id do bloco de revisao. */
   reviewMap?: Record<string, string[]>;
 
-  /* Estrutura legada (Unidades 2 a 5). */
   priorKnowledgeQuestions: QuizQuestion[];
   content: ContentSection[];
   examples: Example[];

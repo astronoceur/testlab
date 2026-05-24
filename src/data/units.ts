@@ -5,25 +5,7 @@ import { unit3 } from './unit3Data';
 import { unit4 } from './unit4Data';
 import { unit5 } from './unit5Data';
 
-/*
- * CENTRALIZED UNIT DATA
- * ─────────────────────
- * Para adicionar uma nova unidade no padrao da Unidade 1:
- *   1) crie src/data/unitNData.ts seguindo o mesmo formato.
- *   2) importe e adicione no array `units`.
- *
- * Unidades 2 a 5 ainda usam o formato legado (campos simples) —
- * todas as paginas continuam funcionando porque os campos novos
- * sao opcionais. Quando elas forem migradas para o formato
- * completo, as paginas correspondentes ficarao automaticamente
- * disponiveis.
- */
-
 export const units: Unit[] = [
-  /* ══════════════════════════════════════════════════════════════
-     UNIDADE 1 – Fundamentos de Teste de Software
-     Conteudo completo em src/data/unit1Data.ts
-  ══════════════════════════════════════════════════════════════ */
   unit1,
 
   /* eslint-disable */
@@ -259,19 +241,9 @@ export const units: Unit[] = [
       },
     },
   } as unknown as Unit]) as Unit[]),
-  /* eslint-enable */
 
-  /* ══════════════════════════════════════════════════════════════
-     UNIDADE 2 – Tipos de Teste de Software
-     Conteudo completo em src/data/unit2Data.ts
-  ══════════════════════════════════════════════════════════════ */
   unit2,
 
-  /* ══════════════════════════════════════════════════════════════
-     UNIDADE 2 (legado) — substituida pela versao rica acima.
-     Mantida sob bloco morto para referencia historica do conteudo
-     anterior ("Tecnicas de Projeto de Teste"). Nunca executado.
-  ══════════════════════════════════════════════════════════════ */
   /* eslint-disable */
   // @ts-ignore — placeholder legado da Unidade 2
   ...((true ? [] : [{
@@ -515,19 +487,9 @@ export const units: Unit[] = [
       },
     },
   } as unknown as Unit]) as Unit[]),
-  /* eslint-enable */
 
-  /* ══════════════════════════════════════════════════════════════
-     UNIDADE 3 – Técnicas de Teste
-     Conteudo completo em src/data/unit3Data.ts
-  ══════════════════════════════════════════════════════════════ */
   unit3,
 
-  /* ══════════════════════════════════════════════════════════════
-     UNIDADE 3 (legado) — substituida pela versao rica acima.
-     Mantida sob bloco morto para referencia historica do conteudo
-     anterior ("Tipos e Niveis de Teste"). Nunca executado.
-  ══════════════════════════════════════════════════════════════ */
   /* eslint-disable */
   // @ts-ignore — placeholder legado da Unidade 3
   ...((true ? [] : [{
@@ -772,19 +734,9 @@ export const units: Unit[] = [
       },
     },
   } as unknown as Unit]) as Unit[]),
-  /* eslint-enable */
 
-  /* ══════════════════════════════════════════════════════════════
-     UNIDADE 4 – Casos de Teste
-     Conteudo completo em src/data/unit4Data.ts
-  ══════════════════════════════════════════════════════════════ */
   unit4,
 
-  /* ══════════════════════════════════════════════════════════════
-     UNIDADE 4 (legado) — substituida pela versao rica acima.
-     Mantida sob bloco morto para referencia historica do conteudo
-     anterior ("Gestao de Defeitos"). Nunca executado.
-  ══════════════════════════════════════════════════════════════ */
   /* eslint-disable */
   // @ts-ignore — placeholder legado da Unidade 4
   ...((true ? [] : [{
@@ -1035,19 +987,9 @@ export const units: Unit[] = [
       },
     },
   } as unknown as Unit]) as Unit[]),
-  /* eslint-enable */
 
-  /* ══════════════════════════════════════════════════════════════
-     UNIDADE 5 – Identificação e Registro de Defeitos
-     Conteudo completo em src/data/unit5Data.ts
-  ══════════════════════════════════════════════════════════════ */
   unit5,
 
-  /* ══════════════════════════════════════════════════════════════
-     UNIDADE 5 (legado) — substituida pela versao rica acima.
-     Mantida sob bloco morto para referencia historica do conteudo
-     anterior ("Automacao de Testes"). Nunca executado.
-  ══════════════════════════════════════════════════════════════ */
   /* eslint-disable */
   // @ts-ignore — placeholder legado da Unidade 5
   ...((true ? [] : [{
@@ -1299,5 +1241,4 @@ export const units: Unit[] = [
       },
     },
   } as unknown as Unit]) as Unit[]),
-  /* eslint-enable */
 ];

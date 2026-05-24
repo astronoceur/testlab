@@ -5,10 +5,6 @@ import { units } from '../data/units';
 import { nextPage, previousPage } from '../data/unitFlow';
 import ExamplesPage from './ExamplesPage';
 
-/* Demonstracao com exemplo resolvido (formato rico Unidade 1).
- * Quando a unidade nao tem `demonstration`, delega para ExamplesPage
- * (formato legado das Unidades 2..5).
- */
 const DemonstrationPage: React.FC = () => {
   const { navigateTo, currentUnit, setDemonstrationViewed } = useApp();
   const unit = units.find((u) => u.id === currentUnit)!;
@@ -45,7 +41,6 @@ const DemonstrationPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Requisito */}
         <div className="tl-card" style={{ background: '#e4f4ff', borderColor: '#5588cc' }}>
           <p style={{ margin: '0 0 4px', fontWeight: 800, color: '#224488', fontSize: '0.85rem' }}>
             📋 Requisito do sistema
@@ -55,7 +50,6 @@ const DemonstrationPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Situação */}
         <div className="tl-card" style={{ background: '#fdd', borderColor: '#8b0000' }}>
           <p style={{ margin: '0 0 4px', fontWeight: 800, color: '#660000', fontSize: '0.85rem' }}>
             🚨 A situação problemática
@@ -65,7 +59,6 @@ const DemonstrationPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Análise passo a passo */}
         <div>
           <p style={{ margin: '0 0 0.6rem', fontWeight: 800, color: '#1a4a10' }}>
             🔬 Análise passo a passo
@@ -112,7 +105,6 @@ const DemonstrationPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Lição principal */}
         <div className="tl-card" style={{ background: '#d4f0c0', borderColor: '#2d8f2d', borderWidth: 3 }}>
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
             <span style={{ fontSize: '1.8rem' }}>💡</span>

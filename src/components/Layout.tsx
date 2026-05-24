@@ -3,7 +3,6 @@ import { useApp } from '../context/AppContext';
 import { Page } from '../types';
 import { units } from '../data/units';
 
-/* Mapa rico (Unidade 1 estilo PDF) — 13 passos. */
 const STEP_MAP_RICH: Partial<Record<Page, number>> = {
   welcome: 1,
   objectives: 2,
@@ -21,7 +20,6 @@ const STEP_MAP_RICH: Partial<Record<Page, number>> = {
   challenge: 13,
 };
 
-/* Mapa simples (Unidades 2..5 sem novo conteudo) — 10 passos. */
 const STEP_MAP_LEGACY: Partial<Record<Page, number>> = {
   welcome: 1,
   objectives: 2,
@@ -56,7 +54,6 @@ const STEP_LABELS: Partial<Record<Page, string>> = {
 interface LayoutProps {
   children: React.ReactNode;
   showProgress?: boolean;
-  /** Quando true, o conteudo principal usa container mais largo (Home unificada). */
   wide?: boolean;
 }
 

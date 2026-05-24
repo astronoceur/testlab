@@ -1,27 +1,5 @@
 import { Unit } from '../types';
 
-/* ──────────────────────────────────────────────────────────────────
- * UNIDADE 3 — Técnicas de Teste
- *
- * Conteudo fiel ao documento
- * "TestLab_Unidade3_Tecnicas_de_Teste.docx.pdf".
- * Estrutura segue o mesmo molde das Unidades 1 e 2 (unit1Data.ts /
- * unit2Data.ts) para facilitar manutencao e adicao de novas
- * unidades.
- *
- * Mapeamento das atividades para os slots da plataforma:
- *   - Atividade 3.1 (campos estruturados sobre tecnicas) -> atividade12
- *     (discursiva: o usuario escreve a analise completa num campo
- *     unico, com sample answer detalhada e rubrica).
- *   - Atividade 3.2 (8 questoes objetivas) -> atividade11 (quiz com
- *     modal por questao e feedback imediato).
- *   - Pratica Guiada (saque ATM) -> guidedPracticeRich.
- *   - Pratica Independente (controle de acesso academia) ->
- *     independentPracticeRich.
- *   - Avaliacao Final (10 questoes) -> finalAssessmentQuestions.
- *   - Desafio Aplicado (cadastro de salario) -> finalChallenge.
- * ────────────────────────────────────────────────────────────────── */
-
 export const unit3: Unit = {
   id: 3,
   title: 'Unidade 3',
@@ -44,7 +22,6 @@ export const unit3: Unit = {
     'Selecionar um conjunto mínimo e eficaz de casos de teste a partir de entradas, saídas e regras de negócio de um sistema simples.',
   ],
 
-  /* ─── 3. Situacao-problema inicial ─────────────────────────── */
   situationProblem: {
     title: 'O Sistema de Notas que Aprovava Quem Não Devia',
     paragraphs: [
@@ -62,7 +39,6 @@ export const unit3: Unit = {
       'Este cenário ilustra por que técnicas de teste existem: elas oferecem critérios objetivos para selecionar casos de teste que maximizam a probabilidade de encontrar defeitos sem precisar testar todas as combinações possíveis. Ao longo desta unidade, você aprenderá a usar essas técnicas de forma prática.',
   },
 
-  /* ─── 4. Ativacao de conhecimentos previos ─────────────────── */
   priorKnowledgeQuestions: [
     {
       id: 'PK3-1',
@@ -114,7 +90,6 @@ export const unit3: Unit = {
     },
   ],
 
-  /* ─── 5. Conteudo teorico (7 blocos) ───────────────────────── */
   theoryBlocks: [
     {
       id: 'bloco-1',
@@ -330,7 +305,6 @@ export const unit3: Unit = {
     },
   ],
 
-  /* ─── 6. Demonstracao com exemplo resolvido ───────────────── */
   demonstration: {
     requirement:
       'Sistema acadêmico que calcula a situação final de um aluno com base na média de duas provas. Situação: Aprovado se média >= 6,0; Reprovado se média < 6,0. Restrições: cada nota deve ser numérica entre 0,0 e 10,0 (inclusive). Notas fora dessa faixa ou não numéricas devem ser rejeitadas com mensagem de erro.',
@@ -382,7 +356,6 @@ export const unit3: Unit = {
       'A combinação de particionamento de equivalência, análise de valor limite e verificação de cobertura de decisões produziu 10 casos de teste que cobrem os cenários mais críticos do sistema — incluindo os limites de aprovação e os casos que revelaram os defeitos descritos no cenário inicial desta unidade. Nenhuma técnica sozinha teria sido tão eficaz.',
   },
 
-  /* ─── 7. Atividade 3.1 — discursiva (campos integrados) ───── */
   atividade12: {
     question:
       'Um sistema de agendamento de consultas médicas permite que o paciente informe o número de dias de antecedência. Regras: o número deve ser um valor inteiro entre 1 e 30 (inclusive); valores fora desse intervalo (incluindo 0 e negativos) devem ser rejeitados com a mensagem "Número de dias inválido"; valores não inteiros ou não numéricos também devem ser rejeitados. Aplique particionamento de equivalência e análise de valor limite. Em sua resposta, descreva: (a) as classes de equivalência válidas; (b) as classes inválidas; (c) os valores-limite a testar; (d) ao menos 5 casos de teste resultantes; (e) o resultado esperado de cada caso.',
@@ -424,7 +397,6 @@ export const unit3: Unit = {
     ],
   },
 
-  /* ─── 8. Atividade 3.2 — Lista de exercicios (8 questoes) ──── */
   atividade11: {
     description:
       'Lista de exercícios sobre técnicas de teste. Cada questão tem apenas uma alternativa correta. Você recebe feedback imediato após cada resposta. As questões abrangem identificação de técnicas, classificação, análise de classes e seleção de casos de teste.',
@@ -568,7 +540,6 @@ export const unit3: Unit = {
     ],
   },
 
-  /* ─── 9. Pratica Guiada — Caixa Eletronico (saque) ────────── */
   guidedPracticeRich: {
     scenario:
       'Um sistema bancário simples permite que o correntista realize saques no caixa eletrônico. As regras são: o valor do saque deve ser múltiplo de R$ 50,00; o valor mínimo é R$ 50,00; o valor máximo por operação é R$ 1.500,00; o valor não pode ser superior ao saldo disponível; valores negativos, zero e valores não numéricos devem ser rejeitados.',
@@ -632,7 +603,6 @@ export const unit3: Unit = {
       'Você aplicou corretamente particionamento de equivalência e análise de valor limite a um sistema com múltiplas regras de validação. Note que cada regra inválida gera uma classe própria, e que os valores-limite da faixa de valor de saque (R$ 50 e R$ 1.500) são os casos mais críticos para revelar defeitos de operadores de comparação.',
   },
 
-  /* ─── 10. Pratica Independente — Controle de Acesso Academia ─ */
   independentPracticeRich: {
     scenario:
       'Um sistema de controle de acesso a uma academia verifica se um visitante pode entrar. Regras: a idade deve ser maior ou igual a 16 anos; o plano contratado deve ser "basico", "standard" ou "premium" (qualquer outro valor é inválido); o acesso é liberado somente se o plano estiver com status "ativo" (planos "inativo" ou "suspenso" bloqueiam); visitantes com idade entre 16 e 17 anos precisam ter autorização dos responsáveis (campo booleano). Quando todas as condições são atendidas, o sistema exibe "Acesso liberado"; caso contrário, "Acesso negado" com o motivo.',
@@ -711,7 +681,6 @@ export const unit3: Unit = {
       'Revise o cenário campo por campo. Para cada campo, pergunte: quais valores são aceitos? Quais são rejeitados? A partir disso, as classes se formam. Em seguida, identifique os limites numéricos (campo de idade) e os pontos de fronteira. Por fim, mapeie cada "se" do sistema como uma decisão lógica. Revise os Blocos 4, 5 e 6.',
   },
 
-  /* ─── 11. Avaliacao Final — 10 questoes (AF3-01 a AF3-10) ── */
   finalAssessmentQuestions: [
     {
       id: 'AF3-01',
@@ -889,7 +858,6 @@ export const unit3: Unit = {
     'AF3-10': ['bloco-2', 'bloco-3', 'bloco-4', 'bloco-5'],
   },
 
-  /* ─── 12. Desafio Aplicado Final — Cadastro de Salario ───── */
   finalChallenge: {
     enunciado:
       'Leia o cenário a seguir e aplique sistematicamente as técnicas estudadas nesta unidade. Para o sistema descrito, identifique entradas válidas e inválidas, classes de equivalência, valores-limite, decisões lógicas e proponha um conjunto mínimo de casos de teste, indicando a técnica usada em cada um. Esta atividade avalia sua capacidade de derivar casos de teste eficazes a partir de uma especificação real e integradora.',
@@ -978,7 +946,6 @@ export const unit3: Unit = {
       'Ao concluir este desafio, você aplicou sistematicamente as três técnicas centrais desta unidade — particionamento de equivalência, análise de valor limite e identificação de decisões lógicas — a um sistema real com múltiplas regras de validação. A capacidade de derivar casos de teste eficazes a partir de especificações é uma das habilidades mais valorizadas em profissionais de qualidade de software. Você está pronto para avançar para a Unidade 4.',
   },
 
-  /* ─── Estrutura legada (mantida para compatibilidade) ──────── */
   content: [],
   examples: [],
   guidedPractice: {

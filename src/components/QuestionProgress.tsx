@@ -1,18 +1,8 @@
 import React from 'react';
 
-/* ──────────────────────────────────────────────────────────────────
- * QuestionProgress
- * ────────────────
- * Indicador de progresso dentro de uma atividade — exibe
- * "Questao N de M" + barra de progresso. Tambem pode receber um
- * total de questoes ja respondidas para mostrar contexto extra.
- * ────────────────────────────────────────────────────────────────── */
-
 interface QuestionProgressProps {
-  /** Numero da questao atual (1-indexed). */
   current: number;
   total: number;
-  /** Quantidade de questoes ja respondidas (opcional). */
   answered?: number;
 }
 
