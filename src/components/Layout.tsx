@@ -56,9 +56,11 @@ const STEP_LABELS: Partial<Record<Page, string>> = {
 interface LayoutProps {
   children: React.ReactNode;
   showProgress?: boolean;
+  /** Quando true, o conteudo principal usa container mais largo (Home unificada). */
+  wide?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, showProgress = false }) => {
+const Layout: React.FC<LayoutProps> = ({ children, showProgress = false, wide = false }) => {
   const { page, user, navigateTo, logout, currentUnit } = useApp();
   const unit = units.find((u) => u.id === currentUnit);
 
@@ -67,10 +69,21 @@ const Layout: React.FC<LayoutProps> = ({ children, showProgress = false }) => {
   const totalSteps = isRich ? 13 : 10;
   const step = stepMap[page];
 
+  const containerStyle: React.CSSProperties = wide
+    ? { width: '94vw', maxWidth: '1500px', margin: '0 auto' }
+    : {};
+  const containerClass = wide ? '' : 'max-w-4xl mx-auto px-4';
+  const mainStyle: React.CSSProperties = wide
+    ? { ...containerStyle, paddingTop: '2rem', paddingBottom: '2rem' }
+    : {};
+
   return (
     <div style={{ minHeight: '100vh', background: 'var(--tl-bg)' }}>
       <header className="tl-header sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 py-2 flex items-center justify-between">
+        <div
+          className={`${containerClass} py-2 flex items-center justify-between`}
+          style={containerStyle}
+        >
           <button
             onClick={() => user && navigateTo('home')}
             className="flex items-center gap-2"
@@ -82,22 +95,6 @@ const Layout: React.FC<LayoutProps> = ({ children, showProgress = false }) => {
 
           {user && (
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => navigateTo('units')}
-                style={{
-                  background: 'rgba(0,0,0,0.15)',
-                  border: 'none',
-                  color: '#fff',
-                  fontWeight: 700,
-                  fontSize: '0.8rem',
-                  borderRadius: 6,
-                  padding: '3px 10px',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                }}
-              >
-                Unidades
-              </button>
               <div className="tl-header-user">
                 <span>🐞</span>
                 <span>{user.name}</span>
@@ -114,7 +111,7 @@ const Layout: React.FC<LayoutProps> = ({ children, showProgress = false }) => {
         </div>
 
         {showProgress && step !== undefined && (
-          <div className="max-w-4xl mx-auto px-4 pb-2">
+          <div className={`${containerClass} pb-2`} style={containerStyle}>
             <div className="flex justify-between items-center mb-1">
               <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#e0f0cc' }}>
                 Passo {step} de {totalSteps} — {STEP_LABELS[page]}
@@ -133,7 +130,12 @@ const Layout: React.FC<LayoutProps> = ({ children, showProgress = false }) => {
         )}
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-6">{children}</main>
+      <main
+        className={wide ? '' : `${containerClass} py-6`}
+        style={wide ? mainStyle : containerStyle}
+      >
+        {children}
+      </main>
     </div>
   );
 };

@@ -237,9 +237,14 @@ const FinalAssessmentPage: React.FC = () => {
             gap: '0.5rem',
           }}
         >
-          <button className="tl-btn-ghost" onClick={() => navigateTo('feedback')}>
-            ← Voltar
-          </button>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button className="tl-btn-ghost" onClick={() => navigateTo('feedback')}>
+              ← Voltar
+            </button>
+            <button className="tl-btn-ghost" onClick={() => navigateTo('unit-contents')}>
+              Retornar para Conteúdos
+            </button>
+          </div>
           {finalAssessmentSubmitted && passed && (
             <button className="tl-btn" onClick={() => navigateTo('challenge')}>
               Ir ao Desafio Aplicado 🏆

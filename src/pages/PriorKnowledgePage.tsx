@@ -138,9 +138,12 @@ const PriorKnowledgePage: React.FC = () => {
           </div>
         )}
 
-        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '0.5rem', flexWrap: 'wrap' }}>
           <button className="tl-btn-ghost" onClick={handleBack}>
             ← Voltar
+          </button>
+          <button className="tl-btn-ghost" onClick={() => navigateTo('unit-contents')}>
+            Retornar para Conteúdos
           </button>
         </div>
       </div>

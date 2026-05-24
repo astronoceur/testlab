@@ -209,16 +209,21 @@ const FeedbackPage: React.FC = () => {
           </ul>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <button
-            className="tl-btn-ghost"
-            onClick={() => {
-              const prev = previousPage('feedback', unit) ?? 'independent-practice';
-              navigateTo(prev);
-            }}
-          >
-            ← Voltar
-          </button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button
+              className="tl-btn-ghost"
+              onClick={() => {
+                const prev = previousPage('feedback', unit) ?? 'independent-practice';
+                navigateTo(prev);
+              }}
+            >
+              ← Voltar
+            </button>
+            <button className="tl-btn-ghost" onClick={() => navigateTo('unit-contents')}>
+              Retornar para Conteúdos
+            </button>
+          </div>
           <button className="tl-btn" onClick={() => navigateTo('final-assessment')}>
             Avaliação Final →
           </button>

@@ -52,8 +52,11 @@ const ObjectivesPage: React.FC = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <button className="tl-btn-ghost" onClick={() => navigateTo('welcome')}>← Voltar</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button className="tl-btn-ghost" onClick={() => navigateTo('welcome')}>← Voltar</button>
+            <button className="tl-btn-ghost" onClick={() => navigateTo('unit-contents')}>Retornar para Conteúdos</button>
+          </div>
           <button className="tl-btn" onClick={handleContinue}>
             {unit.situationProblem ? 'Ver situação-problema →' : 'Fazer quiz de conhecimentos →'}
           </button>

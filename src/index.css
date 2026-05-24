@@ -211,6 +211,20 @@ body {
 .tl-option-selected { background-color: var(--tl-btn-ghost) !important; border-color: var(--tl-title) !important; }
 .tl-option-disabled { background-color: var(--tl-bg-soft) !important; border-color: var(--tl-text-muted) !important; color: var(--tl-text-muted); cursor: default; }
 
+/* ─── Home layout (Home unificada com lista de unidades) ─────── */
+.tl-home-grid {
+  display: grid;
+  grid-template-columns: minmax(560px, 1fr) minmax(620px, 1.08fr);
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 1240px) {
+  .tl-home-grid {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+}
+
 /* ─── Section number badge ───────────────────────────────────── */
 .tl-badge {
   background-color: var(--tl-title);

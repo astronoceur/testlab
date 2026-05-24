@@ -300,8 +300,8 @@ const UnitContentsPage: React.FC = () => {
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-          <button className="tl-btn-ghost" onClick={() => navigateTo('units')}>
-            ← Voltar para Unidades
+          <button className="tl-btn-ghost" onClick={() => navigateTo('home')}>
+            ← Voltar para Home
           </button>
           <button className="tl-btn" onClick={() => navigateTo('welcome')}>
             Iniciar trilha completa →

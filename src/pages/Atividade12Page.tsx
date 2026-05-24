@@ -171,8 +171,11 @@ const Atividade12Page: React.FC = () => {
           </>
         )}
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <button className="tl-btn-ghost" onClick={handleBack}>← Voltar</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button className="tl-btn-ghost" onClick={handleBack}>← Voltar</button>
+            <button className="tl-btn-ghost" onClick={() => navigateTo('unit-contents')}>Retornar para Conteúdos</button>
+          </div>
           {atividade12Submitted && (
             <button className="tl-btn" onClick={handleContinue}>
               Continuar →

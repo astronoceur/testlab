@@ -180,7 +180,10 @@ const GuidedPracticePage: React.FC = () => {
 
           {/* Botões */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-            <button className="tl-btn-ghost" onClick={handleBack}>← Voltar</button>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <button className="tl-btn-ghost" onClick={handleBack}>← Voltar</button>
+              <button className="tl-btn-ghost" onClick={() => navigateTo('unit-contents')}>Retornar para Conteúdos</button>
+            </div>
             {!guidedPracticeSubmitted ? (
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                 {visibleHints.length < gp.hints.length && (
@@ -279,8 +282,11 @@ const GuidedPracticePage: React.FC = () => {
 
         {guidedPracticeSubmitted && <FeedbackMessage correct={isCorrect()} explanation={gp.explanation} />}
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <button className="tl-btn-ghost" onClick={handleBack}>← Voltar</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button className="tl-btn-ghost" onClick={handleBack}>← Voltar</button>
+            <button className="tl-btn-ghost" onClick={() => navigateTo('unit-contents')}>Retornar para Conteúdos</button>
+          </div>
           {!guidedPracticeSubmitted ? (
             <button
               className="tl-btn"

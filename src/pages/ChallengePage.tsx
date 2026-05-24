@@ -338,15 +338,22 @@ const ChallengePage: React.FC = () => {
               gap: '0.5rem',
             }}
           >
-            <button className="tl-btn-ghost" onClick={() => navigateTo('final-assessment')}>
-              ← Voltar
-            </button>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <button className="tl-btn-ghost" onClick={() => navigateTo('final-assessment')}>
+                ← Voltar
+              </button>
+              {!challengeSubmitted && (
+                <button className="tl-btn-ghost" onClick={() => navigateTo('unit-contents')}>
+                  Retornar para Conteúdos
+                </button>
+              )}
+            </div>
             {!challengeSubmitted ? (
               <button className="tl-btn" onClick={() => setChallengeSubmitted(true)} disabled={!allFilled}>
                 Submeter desafio
               </button>
             ) : (
-              <button className="tl-btn" onClick={() => navigateTo('units')}>
+              <button className="tl-btn" onClick={() => navigateTo('unit-contents')}>
                 Concluir Unidade ✓
               </button>
             )}
@@ -479,14 +486,21 @@ const ChallengePage: React.FC = () => {
         )}
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-          <button className="tl-btn-ghost" onClick={() => navigateTo('final-assessment')}>← Voltar</button>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button className="tl-btn-ghost" onClick={() => navigateTo('final-assessment')}>← Voltar</button>
+            {!challengeSubmitted && (
+              <button className="tl-btn-ghost" onClick={() => navigateTo('unit-contents')}>
+                Retornar para Conteúdos
+              </button>
+            )}
+          </div>
           {!challengeSubmitted ? (
             <button className="tl-btn" onClick={() => setChallengeSubmitted(true)} disabled={!allFilled}>
               Enviar Relatório de Bug
             </button>
           ) : (
-            <button className="tl-btn" onClick={() => navigateTo('units')}>
-              Voltar para Unidades ✓
+            <button className="tl-btn" onClick={() => navigateTo('unit-contents')}>
+              Retornar para Conteúdos ✓
             </button>
           )}
         </div>

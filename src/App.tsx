@@ -2,7 +2,6 @@ import { AppProvider, useApp } from './context/AppContext';
 import ladybug from './assets/ladybug.png';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
-import UnitsPage from './pages/UnitsPage';
 import UnitContentsPage from './pages/UnitContentsPage';
 import WelcomePage from './pages/WelcomePage';
 import ObjectivesPage from './pages/ObjectivesPage';
@@ -46,7 +45,10 @@ const PageRouter = () => {
   switch (page) {
     case 'login':                return <LoginPage />;
     case 'home':                 return <HomePage />;
-    case 'units':                return <UnitsPage />;
+    /* A pagina dedicada de Unidades foi unificada com a Home. Mantemos
+     * o caso 'units' como alias para preservar links internos como
+     * "Voltar para Unidades" presentes em paginas de unidade. */
+    case 'units':                return <HomePage />;
     case 'unit-contents':        return <UnitContentsPage />;
     case 'welcome':              return <WelcomePage />;
     case 'objectives':           return <ObjectivesPage />;

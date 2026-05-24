@@ -77,8 +77,11 @@ const ExamplesPage: React.FC = () => {
           </div>
         ))}
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <button className="tl-btn-ghost" onClick={() => navigateTo('content')}>← Voltar ao Conteúdo</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button className="tl-btn-ghost" onClick={() => navigateTo('content')}>← Voltar ao Conteúdo</button>
+            <button className="tl-btn-ghost" onClick={() => navigateTo('unit-contents')}>Retornar para Conteúdos</button>
+          </div>
           <button className="tl-btn" onClick={() => navigateTo('guided-practice')} disabled={!allAnswered}>
             Prática Guiada →
           </button>
