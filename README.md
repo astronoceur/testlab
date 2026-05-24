@@ -42,7 +42,7 @@ A arquitetura pedagógica é baseada nos **Nove Eventos de Instrução de Robert
 | Camada | Tecnologia |
 |---|---|
 | **Frontend** | React 18, TypeScript, Vite 5 |
-| **Estilização** | Tailwind CSS 3, PostCSS, Autoprefixer |
+| **Estilização** | Tailwind CSS 3, PostCSS |
 | **Backend (BaaS)** | Supabase (autenticação + PostgreSQL) |
 | **Deploy** | Vercel |
 
@@ -121,16 +121,6 @@ A aplicação ficará disponível em [http://localhost:5173](http://localhost:51
 
 ---
 
-## 📜 Scripts disponíveis
-
-| Comando | Descrição |
-|---|---|
-| `npm run dev` | Inicia o servidor de desenvolvimento (Vite) |
-| `npm run build` | Compila o TypeScript e gera o build de produção |
-| `npm run preview` | Pré-visualiza o build de produção localmente |
-
----
-
 ## ☁️ Deploy
 
 A aplicação está publicada na Vercel:
@@ -143,7 +133,6 @@ A aplicação está publicada na Vercel:
 ## 🎓 Contexto acadêmico
 
 | | |
-|---|---|
 | **Instituição** | Universidade do Estado do Amazonas (UEA) |
 | **Unidade** | Escola Superior de Tecnologia (EST) |
 | **Curso** | Licenciatura em Computação |
