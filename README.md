@@ -8,7 +8,7 @@ Projeto desenvolvido na disciplina *Oficina de Desenvolvimento de Software Educa
 
 [🔗 Acessar plataforma](https://test-lab-chi.vercel.app)
 &nbsp;·&nbsp;
-[📄 Documentação](#-documentação-acadêmica)
+[📄 Documentação](https://docs.google.com/document/d/1r77TDgu8IJJC-Ty0LMs56-GMpHbrsSGkOV9A0w_6ups/edit?usp=sharing)
 &nbsp;·&nbsp;
 [🐛 Reportar bug](https://github.com/astronoceur/testlab/issues)
 
@@ -34,19 +34,6 @@ A **TestLab** é uma plataforma educacional digital voltada ao ensino de **Teste
 - identificação, classificação e registro de defeitos.
 
 A arquitetura pedagógica é baseada nos **Nove Eventos de Instrução de Robert Gagné**, organizando cada unidade em uma sequência didática progressiva, com feedback imediato, avaliação contínua e controle de progresso.
-
----
-
-## ✨ Funcionalidades
-
-- 🔐 **Autenticação** de usuários via Supabase Auth (cadastro e login).
-- 📖 **Conteúdo teórico** organizado em 5 unidades sequenciais.
-- ✏️ **Atividades interativas** — quizzes, classificações e exercícios práticos.
-- ⚡ **Feedback automático** imediato e explicativo após cada resposta.
-- 📊 **Painel do estudante** com indicadores de desempenho e média de acertos.
-- 🔓 **Progressão por desempenho** — unidades liberadas conforme a conclusão da anterior.
-- 💾 **Retomada de progresso** — o aluno volta exatamente de onde parou.
-- 🎯 **Desafio aplicado** ao final de cada unidade para fixação do conteúdo.
 
 ---
 
@@ -150,23 +137,8 @@ A aplicação está publicada na Vercel:
 
 🔗 **[https://test-lab-chi.vercel.app](https://test-lab-chi.vercel.app)**
 
-Para realizar seu próprio deploy:
-
-1. Faça um *fork* deste repositório.
-2. Importe o projeto em [vercel.com](https://vercel.com).
-3. Configure as variáveis de ambiente `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` no painel da Vercel.
-4. O deploy é executado automaticamente a cada *push* na branch `main`.
-
 ---
 
-## 📄 Documentação acadêmica
-
-A documentação completa da plataforma — escopo e visão do produto, matriz de design instrucional, arquitetura pedagógica, elicitação de requisitos, modelagem (UML e DER) e prototipação — está disponível no documento da disciplina.
-
-**Modelo pedagógico:** Nove Eventos de Instrução de Robert Gagné.
-**Carga horária estimada:** 34 horas, distribuídas em 5 unidades.
-
----
 
 ## 🎓 Contexto acadêmico
 
